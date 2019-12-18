@@ -1,0 +1,19 @@
+﻿@model GoogleMapPartViewModel
+@using Newtonsoft.Json
+@using Newtonsoft.Json.Serialization;
+@{
+    var jss = new JsonSerializerSettings
+    {
+        ContractResolver = new CamelCasePropertyNamesContractResolver()
+    };
+
+    var serializable = new DisplayMapViewModel
+    {
+        Location = Model.Location,
+        Lat = Model.Lat,
+        Lng = Model.Lng
+    };
+
+    var mapInfo = JsonConvert.SerializeObject(serializable, jss);
+}
+<div class="google-map-data" data-google-map-data="@mapInfo" style="display:none"></div>

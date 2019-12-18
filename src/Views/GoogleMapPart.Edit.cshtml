@@ -1,0 +1,90 @@
+@model GoogleMapPartViewModel
+
+<div class="form-group" asp-validation-class-for="Location">
+    <label asp-for="Location">@T["Location"]</label>
+    <input asp-for="Location" class="form-control content-preview-text" />
+    <span class="hint">@T["Location search with Google Maps Places API."]</span>
+</div>
+
+<div class="row">
+    <div class="form-group col-12 col-md-6" asp-validation-class-for="Lat">
+        <label asp-for="Lat">@T["Latitude"]</label>
+        <input asp-for="Lat" class="form-control content-preview-text" />
+        <span class="hint">@T["Latitude."]</span>
+    </div>
+
+    <div class="form-group col-12 col-md-6" asp-validation-class-for="Lng">
+        <label asp-for="Lng">@T["Longitude"] </label>
+        <input asp-for="Lng" class="form-control content-preview-text" />
+        <span class="hint">@T["Longitude."]</span>
+    </div>
+</div>
+
+<div id="google-map" style="height:500px" class="mb-3"></div>
+
+<script at="Foot">
+
+    var autocomplete;
+    var map;
+    var setMarker;
+    var marker;
+    var mapInit = function () {
+        map = new google.maps.Map(document.getElementById('google-map'), {
+            center: { lat: @Model.Settings.DefaultLat, lng: @Model.Settings.DefaultLng },
+            zoom: 8
+        });
+
+        setMarker = function (position, map) {
+            if (marker != undefined) {
+                marker.setMap(null);
+            }
+
+            marker = new google.maps.Marker({
+                position: position,
+                map: map
+            });
+
+            map.panTo(position);
+
+            $('#@Html.IdFor(m => m.Lat)').val(position.lat());
+            $('#@Html.IdFor(m => m.Lng)').val(position.lng());
+        };
+
+        @if(!String.IsNullOrEmpty(Model.Lat) && !String.IsNullOrEmpty(Model.Lng))
+        {
+            <text>
+            setMarker(new google.maps.LatLng(parseFloat(@Model.Lat), parseFloat(@Model.Lng)), map);
+            </text>
+        }
+
+        $('#@Html.IdFor(m => m.Lat)').change(function () {
+            setMarker(new google.maps.LatLng(parseFloat($(this).val()), parseFloat(@Model.Lng)), map);
+        })
+
+        $('#@Html.IdFor(m => m.Lng)').change(function () {
+            setMarker(new google.maps.LatLng(parseFloat(@Model.Lat), parseFloat($(this).val())), map);
+        })
+
+        map.addListener('click', function(e) {
+            setMarker(e.latLng, map);
+        });
+
+        autocomplete = new google.maps.places.Autocomplete(document.getElementById('@Html.IdFor(m => m.Location)'));
+        places = new google.maps.places.PlacesService(map);
+
+        autocomplete.addListener('place_changed', onPlaceChanged);
+        function onPlaceChanged() {
+        var place = autocomplete.getPlace();
+        if (place.geometry) {
+            map.panTo(place.geometry.location);
+            map.setZoom(15);
+            search();
+        } else {
+            document.getElementById('location-input').placeholder = '';
+        }
+      }
+    }
+
+</script>
+
+<script asp-src="https://maps.googleapis.com/maps/api/js?key=@Model.Settings.ApiKey&libraries=places&callback=mapInit" async defer at="Foot"></script>

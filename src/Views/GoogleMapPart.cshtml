@@ -1,0 +1,40 @@
+@model GoogleMapPartViewModel
+
+<div id="google-map" style="height:500px" class="mb-3"></div>
+
+<script at="Foot">
+
+    var map;
+    var setMarker;
+    var marker;
+    var mapInit = function () {
+        map = new google.maps.Map(document.getElementById('google-map'), {
+            center: { lat: @Model.Settings.DefaultLat, lng: @Model.Settings.DefaultLng },
+            zoom: 8
+        });
+
+        setMarker = function (position, map) {
+            if (marker != undefined) {
+                marker.setMap(null);
+            }
+
+            marker = new google.maps.Marker({
+                position: position,
+                map: map
+            });
+
+            map.panTo(position);
+        };
+
+        @if(!String.IsNullOrEmpty(Model.Lat) && !String.IsNullOrEmpty(Model.Lng))
+        {
+            <text>
+            setMarker(new google.maps.LatLng(parseFloat(@Model.Lat), parseFloat(@Model.Lng)), map);
+            </text>
+        }
+    }
+
+</script>
+
+
+<script asp-src="https://maps.googleapis.com/maps/api/js?key=@Model.Settings.ApiKey&libraries=places&callback=mapInit" async defer at="Foot"></script>

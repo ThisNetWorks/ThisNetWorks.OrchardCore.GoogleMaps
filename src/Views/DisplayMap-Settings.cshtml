@@ -1,0 +1,16 @@
+﻿@using OrchardCore.Entities;
+@using ThisNetWorks.OrchardCore.GoogleMaps.Settings;
+@using Newtonsoft.Json;
+@using Newtonsoft.Json.Serialization;
+@{
+    var jss = new JsonSerializerSettings
+    {
+        ContractResolver = new CamelCasePropertyNamesContractResolver()
+    };
+
+    var settings = Site.As<GoogleMapsSettings>();
+    var mapInfo = JsonConvert.SerializeObject(settings, jss);
+}
+<div id="google-map-settings" data-google-map-settings="@mapInfo" style="display:none"></div>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=@settings.ApiKey&libraries=places&callback=mapInit" async defer at="Foot"></script>

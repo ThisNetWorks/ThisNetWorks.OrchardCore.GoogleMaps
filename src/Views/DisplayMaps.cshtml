@@ -1,0 +1,34 @@
+﻿
+<div id="google-map" style="height:500px" class="mb-3"></div>
+
+<script at="Foot">
+    var mapData = [];
+    $('.google-map-data').each(function(i,item){
+        mapData.push($(item).data("google-map-data"));
+    });
+
+    var mapSettings = $('#google-map-settings').data('google-map-settings');
+
+    var map;
+    var setMarker;
+    var mapInit = function () {
+        map = new google.maps.Map(document.getElementById('google-map'), {
+            center: { lat: parseFloat(mapSettings.defaultLat), lng: parseFloat(mapSettings.defaultLng) },
+            zoom: 8
+        });
+
+        setMarker = function (position, map) {
+            new google.maps.Marker({
+                position: position,
+                map: map
+            });
+
+            map.panTo(position);
+        };
+
+        mapData.forEach(function (item) {
+            setMarker(new google.maps.LatLng(parseFloat(item.lat), parseFloat(item.lng)), map);
+        });
+    }
+</script>
+

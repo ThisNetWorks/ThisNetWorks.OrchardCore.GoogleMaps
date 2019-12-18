@@ -1,0 +1,33 @@
+@model ThisNetWorks.OrchardCore.GoogleMaps.Settings.GoogleMapsSettingsViewModel
+
+<div class="form-group">
+    <div class="row col-lg">
+        <label asp-for="ApiKey">@T["Api Key"]</label>
+        <input asp-for="ApiKey" class="form-control" />
+        <span class="hint">@T["Google Maps Api Key."]</span>
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="row col-lg">
+        <label asp-for="ApiVersion">@T["Api Version"]</label>
+        <input asp-for="ApiVersion" class="form-control" />
+        <span class="hint">@T["Google Maps Api Version."]</span>
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="row col-lg">
+        <label asp-for="DefaultLat">@T["Default Latitude"]</label>
+        <input asp-for="DefaultLat" class="form-control" />
+        <span class="hint">@T["The default latitude to use when selecting a location."]</span>
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="row col-lg">
+        <label asp-for="DefaultLng">@T["Default Longitude"]</label>
+        <input asp-for="DefaultLng" class="form-control" />
+        <span class="hint">@T["The default longitude to use when selecting a location."]</span>
+    </div>
+</div>
