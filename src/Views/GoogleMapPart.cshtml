@@ -1,6 +1,6 @@
 @model GoogleMapPartViewModel
 
-<div id="google-map" style="height:500px" class="mb-3"></div>
+@await DisplayAsync(await New.GoogleMapPartContainer())
 
 <script at="Foot">
 

@@ -11,7 +11,6 @@ namespace ThisNetWorks.OrchardCore.GoogleMaps.Settings
     {
         public const string GroupId = "googlemaps";
 
-
         public override IDisplayResult Edit(GoogleMapsSettings settings, BuildEditorContext context)
         {
             return Initialize<GoogleMapsSettingsViewModel>("GoogleMapsSettings_Edit", model =>

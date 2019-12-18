@@ -1,0 +1,19 @@
+﻿@model dynamic
+@inject ISession Session
+@{
+    IQueryIndex<GoogleMapPartIndex> query = null;
+    if (Model.ContentType != null)
+    {
+        var contentType = Model.ContentType as string;
+        query = Session.QueryIndex<GoogleMapPartIndex>(x => x.ContentType == contentType);
+    } else
+    {
+        Session.QueryIndex<GoogleMapPartIndex>();
+    }
+
+    var results = await query.ListAsync();
+    var serializable = results.Select(x => new { Lat = x.Lat, Lng = x.Lng });
+    var serialized = JsonConvert.SerializeObject(serializable, CamelCaseJsonSerializer.Settings);
+}
+
+<div class="google-maps-data" data-google-maps-data="@serialized" style="display:none"></div>

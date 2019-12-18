@@ -1,7 +1,6 @@
 ﻿using OrchardCore.ContentManagement;
+using OrchardCore.ContentManagement.Records;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using ThisNetWorks.OrchardCore.GoogleMaps.Models;
 using YesSql.Indexes;
 
@@ -9,12 +8,13 @@ namespace ThisNetWorks.OrchardCore.GoogleMaps.Indexes
 {
     public class GoogleMapPartIndex : MapIndex
     {
+        public const int MaxLocationSize = 255;
         public string ContentItemId { get; set; }
+        public string ContentType { get; set; }
         public string Location { get; set; }
         public string Lat { get; set; }
         public string Lng { get; set; }
     }
-
 
     public class GoogleMapPartIndexProvider : IndexProvider<ContentItem>
     {
@@ -35,13 +35,26 @@ namespace ThisNetWorks.OrchardCore.GoogleMaps.Indexes
                         return null;
                     }
 
-                    return new GoogleMapPartIndex
+                    var googleMapPartIndex = new GoogleMapPartIndex
                     {
                         ContentItemId = contentItem.ContentItemId,
+                        ContentType = contentItem.ContentType,
                         Location = googleMapPart.Location,
                         Lat = googleMapPart.Lat,
                         Lng = googleMapPart.Lng
                     };
+
+                    if (googleMapPartIndex.ContentType?.Length > ContentItemIndex.MaxContentTypeSize)
+                    {
+                        googleMapPartIndex.ContentType = googleMapPartIndex.ContentType.Substring(ContentItemIndex.MaxContentTypeSize);
+                    }
+
+                    if (googleMapPartIndex.Location?.Length > GoogleMapPartIndex.MaxLocationSize)
+                    {
+                        googleMapPartIndex.Location = googleMapPartIndex.Location.Substring(GoogleMapPartIndex.MaxLocationSize);
+                    }
+
+                    return googleMapPartIndex;
                 });
         }
     }

@@ -44,6 +44,5 @@ namespace ThisNetWorks.OrchardCore.GoogleMaps
 
             services.AddScoped<IShapeTableProvider, GoogleMapsSettingsShapes>();
         }
-
     }
 }

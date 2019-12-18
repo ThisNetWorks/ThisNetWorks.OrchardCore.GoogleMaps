@@ -1,31 +1,23 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-using OrchardCore.ContentManagement.Display.ContentDisplay;
+﻿using OrchardCore.ContentManagement.Display.ContentDisplay;
 using OrchardCore.ContentManagement.Display.Models;
 using OrchardCore.ContentManagement.Metadata;
-using OrchardCore.ContentManagement.Records;
 using OrchardCore.DisplayManagement.ModelBinding;
 using OrchardCore.DisplayManagement.Views;
 using OrchardCore.Entities;
 using OrchardCore.Settings;
+using System.Threading.Tasks;
 using ThisNetWorks.OrchardCore.GoogleMaps.Models;
 using ThisNetWorks.OrchardCore.GoogleMaps.Settings;
 using ThisNetWorks.OrchardCore.GoogleMaps.ViewModels;
-using YesSql;
 
 namespace ThisNetWorks.OrchardCore.GoogleMaps.Drivers
 {
     public class GoogleMapPartDisplayDriver : ContentPartDisplayDriver<GoogleMapPart>
     {
-        private readonly IContentDefinitionManager _contentDefinitionManager;
         private readonly ISiteService _siteService;
 
-        public GoogleMapPartDisplayDriver(
-            IContentDefinitionManager contentDefinitionManager,
-            ISiteService siteService
-            )
+        public GoogleMapPartDisplayDriver(ISiteService siteService)
         {
-            _contentDefinitionManager = contentDefinitionManager;
             _siteService = siteService;
         }
 
@@ -47,7 +39,7 @@ namespace ThisNetWorks.OrchardCore.GoogleMaps.Drivers
         public override async Task<IDisplayResult> UpdateAsync(GoogleMapPart model, IUpdateModel updater)
         {
             await updater.TryUpdateModelAsync(model, Prefix, t => t.Location, t => t.Lat, t => t.Lng);
-            
+
             return Edit(model);
         }
 

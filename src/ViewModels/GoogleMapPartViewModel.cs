@@ -5,11 +5,11 @@ using ThisNetWorks.OrchardCore.GoogleMaps.Settings;
 
 namespace ThisNetWorks.OrchardCore.GoogleMaps.ViewModels
 {
-    public class GoogleMapPartDisplayViewModel
+    public class GoogleMapPartViewModel
     {
         public string Location { get; set; }
-        public float Lng { get; set; }
-        public float Lat { get; set; }
+        public string Lng { get; set; }
+        public string Lat { get; set; }
 
         [BindNever]
         public ContentItem ContentItem { get; set; }

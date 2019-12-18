@@ -1,22 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Localization;
-using OrchardCore.Modules;
+﻿using Microsoft.Extensions.Localization;
 using OrchardCore.Navigation;
+using System;
+using System.Threading.Tasks;
 using ThisNetWorks.OrchardCore.GoogleMaps.Settings;
 
 namespace ThisNetWorks.OrchardCore.GoogleMaps
 {
     public class AdminMenu : INavigationProvider
     {
+        private readonly IStringLocalizer S;
         public AdminMenu(IStringLocalizer<AdminMenu> localizer)
         {
-            T = localizer;
+            S = localizer;
         }
 
-        public IStringLocalizer T { get; set; }
 
         public Task BuildNavigationAsync(string name, NavigationBuilder builder)
         {
@@ -26,9 +23,9 @@ namespace ThisNetWorks.OrchardCore.GoogleMaps
             }
 
             builder
-                .Add(T["Configuration"], configuration => configuration
-                    .Add(T["Settings"], settings => settings
-                        .Add(T["Google Maps"], T["Google Maps"], layers => layers
+                .Add(S["Configuration"], configuration => configuration
+                    .Add(S["Settings"], settings => settings
+                        .Add(S["Google Maps"], S["Google Maps"], layers => layers
                             .Action("Index", "Admin", new { area = "OrchardCore.Settings", groupId = GoogleMapsSettingsDisplayDriver.GroupId })
                             .Permission(Permissions.ManageGoogleMaps)
                             .LocalNav()

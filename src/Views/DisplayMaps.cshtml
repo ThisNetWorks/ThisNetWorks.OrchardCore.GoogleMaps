@@ -1,10 +1,17 @@
 ﻿
-<div id="google-map" style="height:500px" class="mb-3"></div>
+@await DisplayAsync(await New.DisplayMapsContainer())
 
 <script at="Foot">
     var mapData = [];
     $('.google-map-data').each(function(i,item){
         mapData.push($(item).data("google-map-data"));
+    });
+
+    var mapsData = $('.google-maps-data').each(function (i, item) {
+        var items = $(item).data("google-maps-data");
+        items.forEach(function (val) {
+            mapData.push(val);
+        });
     });
 
     var mapSettings = $('#google-map-settings').data('google-map-settings');
@@ -18,17 +25,21 @@
         });
 
         setMarker = function (position, map) {
-            new google.maps.Marker({
+            var marker = new google.maps.Marker({
                 position: position,
                 map: map
             });
 
-            map.panTo(position);
+            return marker;
         };
-
+        
+        var bounds = new google.maps.LatLngBounds();
         mapData.forEach(function (item) {
-            setMarker(new google.maps.LatLng(parseFloat(item.lat), parseFloat(item.lng)), map);
+            var marker = setMarker(new google.maps.LatLng(parseFloat(item.lat), parseFloat(item.lng)), map);
+            bounds.extend(marker.position);
         });
+
+        map.fitBounds(bounds);
     }
 </script>
 

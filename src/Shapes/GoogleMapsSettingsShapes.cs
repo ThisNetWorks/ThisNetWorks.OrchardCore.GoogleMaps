@@ -13,11 +13,22 @@ namespace ThisNetWorks.OrchardCore.GoogleMaps.Shapes
             builder.Describe("GoogleMapPart_Summary")
                 .OnDisplaying(displaying =>
                 {
-                    IShape editor = displaying.Shape;
+                    IShape display = displaying.Shape;
 
-                    if (editor.Metadata.Type == "GoogleMapPart_Summary")
+                    if (display.Metadata.Type == "GoogleMapPart_Summary")
                     {
-                        editor.Metadata.Wrappers.Add("DisplayMap_Wrapper__Settings");
+                        display.Metadata.Wrappers.Add("DisplayMap_Wrapper__Settings");
+                    }
+                });
+
+            builder.Describe("QueryGoogleMaps")
+                .OnDisplaying(displaying =>
+                {
+                    IShape display = displaying.Shape;
+
+                    if (display.Metadata.Type == "QueryGoogleMaps")
+                    {
+                        display.Metadata.Wrappers.Add("DisplayMap_Wrapper__Settings");
                     }
                 });
         }
