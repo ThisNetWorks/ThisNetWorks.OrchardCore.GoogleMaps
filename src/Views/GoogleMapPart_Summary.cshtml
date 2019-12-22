@@ -1,0 +1,11 @@
+﻿@model GoogleMapPartViewModel
+@{
+    var serializable = new DisplayMapViewModel
+    {
+        Lat = Model.Lat,
+        Lng = Model.Lng
+    };
+
+    var mapInfo = JsonConvert.SerializeObject(serializable, CamelCaseJsonSerializer.Settings);
+}
+<div class="google-map-data" data-google-map-data="@mapInfo" style="display:none"></div>

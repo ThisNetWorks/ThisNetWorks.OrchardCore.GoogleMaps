@@ -1,0 +1,20 @@
+﻿@model dynamic;
+<script at="Foot">
+    var map;
+
+    var mapInit = function () {
+        map = new google.maps.Map(document.getElementById('google-map'), {
+            center: { lat: @Model.Settings.DefaultLat, lng: @Model.Settings.DefaultLng },
+            zoom: 8
+        });
+
+
+        @if(!String.IsNullOrEmpty(Model.Lat) && !String.IsNullOrEmpty(Model.Lng))
+        {
+            <text>
+            setMarker(new google.maps.LatLng(parseFloat(@Model.Lat), parseFloat(@Model.Lng)), map);
+            </text>
+        }
+    }
+
+</script>

@@ -1,0 +1,12 @@
+﻿<script at="Foot">
+    var marker;
+
+    var setMarker = function (position, map) {
+        marker = new google.maps.Marker({
+            position: position,
+            map: map
+        });
+
+        map.panTo(position);
+    };
+</script>

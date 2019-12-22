@@ -1,0 +1,31 @@
+{% comment %}
+
+<!-- uncomment this to use the paged list to draw map markers -->
+{{ Model.Meta.GoogleMapPart-GoogleMapPart_Summary | shape_render }}
+
+{% endcomment %}
+
+<div class="post-preview">
+    {% a display_for:Model.ContentItem %}
+        <h2 class="post-title">
+            {{ Model.ContentItem.DisplayText }}
+        </h2>
+        <h3 class="post-subtitle">
+            {{ Model.ContentItem.Content.BlogPost.Subtitle.Text }}
+        </h3>
+    {% enda %}
+    <p class="post-meta">
+        {% assign format = "MMMM dd, yyyy" | t %}
+        {% assign dateTime = "DateTime" | shape_new: utc: Model.ContentItem.CreatedUtc, format: format | shape_stringify %}
+        {{ "Posted by" | t }} <a href="#">{{ Model.ContentItem.Owner }}</a> {{ "on {0}" | t: dateTime | raw }}
+  
+        {% assign categoryTerm = Model.ContentItem.Content.BlogPost.Category | taxonomy_terms | first %}
+        <span class="badge badge-secondary"><i class="{{ categoryTerm.Content.Category.Icon.Text }} fa-xs fa-rotate-90"></i> {{ categoryTerm.DisplayText }} </span>
+
+        {% for tag in Model.ContentItem.Content.BlogPost.Tags.Tags %}
+            <span class="badge badge-secondary"><i class="fas fa-tag fa-xs fa-rotate-90"></i> {{ tag }} </span>
+        {% endfor %}
+
+    </p>
+</div>
+<hr />

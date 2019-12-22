@@ -1,0 +1,48 @@
+﻿
+@await DisplayAsync(await New.DisplayMapsContainer())
+
+<script at="Foot">
+    var mapData = [];
+    $('.google-map-data').each(function (i, item) {
+        mapData.push($(item).data("google-map-data"));
+    });
+
+    var mapsData = $('.google-maps-data').each(function (i, item) {
+        var items = $(item).data("google-maps-data");
+        items.forEach(function (val) {
+            mapData.push(val);
+        });
+    });
+
+    var mapSettings = $('#google-map-settings').data('google-map-settings');
+
+    var map;
+    var setMarker = function (position, path, map) {
+        var marker = new google.maps.Marker({
+            position: position,
+            map: map,
+            path: path
+        });
+
+        return marker;
+    };
+
+    var mapInit = function () {
+        map = new google.maps.Map(document.getElementById('google-map'), {
+            center: { lat: parseFloat(mapSettings.defaultLat), lng: parseFloat(mapSettings.defaultLng) },
+            zoom: 8
+        });
+
+        var bounds = new google.maps.LatLngBounds();
+        mapData.forEach(function (item) {
+            var marker = setMarker(new google.maps.LatLng(parseFloat(item.lat), parseFloat(item.lng)), item.path, map);
+            bounds.extend(marker.position);
+            google.maps.event.addListener(marker, 'click', function () {
+                window.location.href = this.path;
+            })
+        });
+
+        map.fitBounds(bounds);
+    }
+</script>
+

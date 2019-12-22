@@ -1,0 +1,11 @@
+@model GoogleMapPartViewModel
+@await DisplayAsync(await New.GoogleMapPartContainer())
+
+<script at="Foot">
+
+    @await DisplayAsync(await New.GoogleMapPartMarker())
+    @await DisplayAsync(await New.GoogleMapPartMapInit(Model))
+
+</script>
+
+<script asp-src="https://maps.googleapis.com/maps/api/js?key=@Model.Settings.ApiKey&libraries=places&callback=mapInit" async defer at="Foot"></script>

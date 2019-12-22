@@ -1,0 +1,7 @@
+﻿@{
+    var settings = Site.As<GoogleMapsSettings>();
+    var mapInfo = JsonConvert.SerializeObject(settings, CamelCaseJsonSerializer.Settings);
+}
+<div id="google-map-settings" data-google-map-settings="@mapInfo" style="display:none"></div>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=@settings.ApiKey&libraries=places&callback=mapInit" async defer at="Foot"></script>
