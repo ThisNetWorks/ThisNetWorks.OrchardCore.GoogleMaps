@@ -3,7 +3,7 @@
 
 <script at="Foot">
     var mapData = [];
-    $('.google-map-data').each(function(i,item){
+    $('.google-map-data').each(function (i, item) {
         mapData.push($(item).data("google-map-data"));
     });
 
@@ -17,26 +17,29 @@
     var mapSettings = $('#google-map-settings').data('google-map-settings');
 
     var map;
-    var setMarker;
+    var setMarker = function (position, path, map) {
+        var marker = new google.maps.Marker({
+            position: position,
+            map: map,
+            path: path
+        });
+
+        return marker;
+    };
+
     var mapInit = function () {
         map = new google.maps.Map(document.getElementById('google-map'), {
             center: { lat: parseFloat(mapSettings.defaultLat), lng: parseFloat(mapSettings.defaultLng) },
             zoom: 8
         });
 
-        setMarker = function (position, map) {
-            var marker = new google.maps.Marker({
-                position: position,
-                map: map
-            });
-
-            return marker;
-        };
-        
         var bounds = new google.maps.LatLngBounds();
         mapData.forEach(function (item) {
-            var marker = setMarker(new google.maps.LatLng(parseFloat(item.lat), parseFloat(item.lng)), map);
+            var marker = setMarker(new google.maps.LatLng(parseFloat(item.lat), parseFloat(item.lng)), item.path, map);
             bounds.extend(marker.position);
+            google.maps.event.addListener(marker, 'click', function () {
+                window.location.href = this.path;
+            })
         });
 
         map.fitBounds(bounds);

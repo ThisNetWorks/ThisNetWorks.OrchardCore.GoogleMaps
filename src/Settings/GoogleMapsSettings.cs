@@ -5,7 +5,7 @@ namespace ThisNetWorks.OrchardCore.GoogleMaps.Settings
     public class GoogleMapsSettings
     {
         public string ApiKey { get; set; }
-        public string ApiVersion { get; set; }
+        public string Location { get; set; }
         [Required]
         public string DefaultLat { get; set; } = "-41.2443487";
         [Required]

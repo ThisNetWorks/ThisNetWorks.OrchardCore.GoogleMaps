@@ -31,7 +31,6 @@ namespace ThisNetWorks.OrchardCore.GoogleMaps
                 .Column<string>("Lng", col => col.WithLength(25))
                 .Column<string>("ContentItemId", c => c.WithLength(26))
                 .Column<string>("ContentType", column => column.WithLength(ContentItemIndex.MaxContentTypeSize))
-                .Column<string>("Location", column => column.WithLength(GoogleMapPartIndex.MaxLocationSize))
             );
 
             // Index on content type as that is most likely to be used for retrieving data from index

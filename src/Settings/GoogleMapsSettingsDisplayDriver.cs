@@ -16,7 +16,7 @@ namespace ThisNetWorks.OrchardCore.GoogleMaps.Settings
             return Initialize<GoogleMapsSettingsViewModel>("GoogleMapsSettings_Edit", model =>
             {
                 model.ApiKey = settings.ApiKey;
-                model.ApiVersion = settings.ApiVersion;
+                model.Location = settings.Location;
                 model.DefaultLat = settings.DefaultLat;
                 model.DefaultLng = settings.DefaultLng;
                 model.GoogleMapSettings = settings;
@@ -30,10 +30,10 @@ namespace ThisNetWorks.OrchardCore.GoogleMaps.Settings
             {
                 var model = new GoogleMapsSettingsViewModel();
 
-                if (await context.Updater.TryUpdateModelAsync(model, Prefix, m => m.ApiKey, m => m.ApiVersion, m => m.DefaultLat, m => m.DefaultLng))
+                if (await context.Updater.TryUpdateModelAsync(model, Prefix, m => m.ApiKey, m => m.Location, m => m.DefaultLat, m => m.DefaultLng))
                 {
                     settings.ApiKey = model.ApiKey;
-                    settings.ApiVersion = model.ApiVersion;
+                    settings.Location = model.Location;
                     settings.DefaultLat = model.DefaultLat;
                     settings.DefaultLng = model.DefaultLng;
                 }
