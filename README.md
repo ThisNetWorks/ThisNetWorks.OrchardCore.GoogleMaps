@@ -24,11 +24,16 @@ The sample in `./samples` is based of the blog recipe, and has some overridden v
 
 To try the sample, clone the repo, and run the sample.
 
-When setting up the site, use the blog recipe.
+The sample has a custom setup event handler which will add the `GoogleMapPart` automatically
+to the `BlogPost` and configure some defaults.
 
-After running the recipe, setup your Api Key, and add the `GoogleMapPart` to a `BlogPost` Content Type Definition.
+It also restricts the recipes available to only that of `TheBlogTheme`.
 
-Clone a few `BlogPosts`, edit them to select a map location, and two maps will be available
+After running setup, setup your Api Key in `Configuration -> Settings -> Google Maps`
+
+The initial blog post will have a default location, but to add multiple markers, 
+clone a few `BlogPosts`, edit them to select a map location, and two maps will be available
+
 1. Map with single marker on the `Detail` view of the `BlogPost`.
 2. Map with multiple markers on the `Blog` page.
 
