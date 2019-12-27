@@ -3,6 +3,15 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>0.0.1-rc1</Version>
+    <PackageId>ThisNetWorks.OrchardCore.GoogleMaps</PackageId>
+    <Title>ThisNetWorks OrchardCore GoogleMaps</Title>
+    <Authors>ThisNetWorks</Authors>
+    <Description>Google Maps module for Orchard Core.</Description>
+    <PackageTags>orchardcore;thisnetworks</PackageTags>
+    <RepositoryUrl>https://github.com/ThisNetWorks/ThisNetWorks.OrchardCore.GoogleMaps</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/ThisNetWorks/ThisNetWorks.OrchardCore.GoogleMaps</PackageProjectUrl>
   </PropertyGroup>
 
   <ItemGroup>
