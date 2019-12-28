@@ -1,0 +1,11 @@
+# GitVersion.yml
+mode: Mainline
+branches: 
+  master:
+    mode: ContinuousDelivery
+    tag: RC1
+    increment: Minor
+    prevent-increment-of-merged-branch-version: false
+    track-merge-target: true
+ignore:
+  sha: []
