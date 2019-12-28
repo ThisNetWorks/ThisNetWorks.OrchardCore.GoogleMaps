@@ -1,5 +1,9 @@
 # GitVersion.yml
 mode: Mainline
-branches: {}
+branches: 
+  master:
+    tag:
+  deanmarcussen/nuget:
+    tag: rc1
 ignore:
   sha: []
