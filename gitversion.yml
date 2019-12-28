@@ -3,7 +3,7 @@ mode: Mainline
 branches: 
   master:
     tag:
-  deanmarcussen/nuget:
+  deanmarcussen?[/-]:
     tag: rc1
 ignore:
   sha: []
