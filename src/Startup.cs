@@ -33,8 +33,9 @@ namespace ThisNetWorks.OrchardCore.GoogleMaps
             services.AddSingleton<IIndexProvider, GoogleMapPartIndexProvider>();
             services.AddScoped<IDataMigration, Migrations>();
 
-            services.AddContentPart<GoogleMapPart>();
-            services.AddScoped<IContentPartDisplayDriver, GoogleMapPartDisplayDriver>();
+            services.AddContentPart<GoogleMapPart>()
+                .UseDisplayDriver<GoogleMapPartDisplayDriver>();
+
             services.AddScoped<IDataMigration, Migrations>();
 
             services.AddScoped<INavigationProvider, AdminMenu>();

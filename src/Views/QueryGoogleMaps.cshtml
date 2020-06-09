@@ -16,12 +16,12 @@
     var list = new List<DisplayMapViewModel>();
     foreach(var result in results)
     {
-        Entries.TryGetPath(result.ContentItemId, out string path);
+        Entries.TryGetEntryByContentItemId(result.ContentItemId, out var autorouteEntry);
         var item = new DisplayMapViewModel
         {
             Lat = result.Lat,
             Lng = result.Lng,
-            Path = path
+            Path = autorouteEntry.Path
         };
         list.Add(item);
     }

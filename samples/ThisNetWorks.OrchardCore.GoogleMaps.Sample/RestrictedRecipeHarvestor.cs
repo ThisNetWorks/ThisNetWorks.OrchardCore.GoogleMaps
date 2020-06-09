@@ -17,6 +17,7 @@ namespace ThisNetWorks.OrchardCore.GoogleMaps.Sample
     public class RestrictedRecipeHarvestor : RecipeHarvester
     {
         private readonly IExtensionManager _extensionManager;
+        private readonly ILogger _logger;
 
         public RestrictedRecipeHarvestor(
             IRecipeReader recipeReader,
@@ -25,11 +26,12 @@ namespace ThisNetWorks.OrchardCore.GoogleMaps.Sample
             ILogger<RecipeHarvester> logger) : base(recipeReader, extensionManager, hostingEnvironment, logger)
         {
             _extensionManager = extensionManager;
+            _logger = logger;
         }
 
         public override Task<IEnumerable<RecipeDescriptor>> HarvestRecipesAsync()
         {
-            return _extensionManager.GetExtensions().Where(x => x.Id == "TheBlogTheme").InvokeAsync(HarvestRecipes, Logger);
+            return _extensionManager.GetExtensions().Where(x => x.Id == "TheBlogTheme").InvokeAsync(HarvestRecipes, _logger);
         }
 
         private Task<IEnumerable<RecipeDescriptor>> HarvestRecipes(IExtensionInfo extension)

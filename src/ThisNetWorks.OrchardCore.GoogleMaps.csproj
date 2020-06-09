@@ -3,15 +3,6 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>0.0.1-rc1</Version>
-    <PackageId>ThisNetWorks.OrchardCore.GoogleMaps</PackageId>
-    <Title>ThisNetWorks OrchardCore GoogleMaps</Title>
-    <Authors>ThisNetWorks</Authors>
-    <Description>Google Maps module for Orchard Core.</Description>
-    <PackageTags>orchardcore;thisnetworks</PackageTags>
-    <RepositoryUrl>https://github.com/ThisNetWorks/ThisNetWorks.OrchardCore.GoogleMaps</RepositoryUrl>
-    <PackageProjectUrl>https://github.com/ThisNetWorks/ThisNetWorks.OrchardCore.GoogleMaps</PackageProjectUrl>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,12 +10,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="OrchardCore.Module.Targets" Version="1.0.0-rc1-*" />
-    <PackageReference Include="OrchardCore.ContentManagement" Version="1.0.0-rc1-*" />
-    <PackageReference Include="OrchardCore.ContentTypes.Abstractions" Version="1.0.0-rc1-*" />
-    <PackageReference Include="OrchardCore.DisplayManagement" Version="1.0.0-rc1-*" />
-    <PackageReference Include="OrchardCore.Navigation.Core" Version="1.0.0-rc1-*" />
-    <PackageReference Include="OrchardCore.ResourceManagement" Version="1.0.0-rc1-*" />
+    <PackageReference Include="OrchardCore.Module.Targets" />
+    <PackageReference Include="OrchardCore.ContentManagement" />
+    <PackageReference Include="OrchardCore.ContentTypes.Abstractions" />
+    <PackageReference Include="OrchardCore.DisplayManagement" />
+    <PackageReference Include="OrchardCore.Navigation.Core" />
+    <PackageReference Include="OrchardCore.ResourceManagement" />
   </ItemGroup>
 
 </Project>
