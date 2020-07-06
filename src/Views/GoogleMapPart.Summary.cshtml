@@ -8,4 +8,4 @@
 
     var mapInfo = JsonConvert.SerializeObject(serializable, CamelCaseJsonSerializer.Settings);
 }
-<div class="google-map-data" data-google-map-data="@mapInfo" style="display:none"></div>
+<div class="google-map-data" data-google-map-data='@Html.Raw(mapInfo)' style="display:none"></div>
