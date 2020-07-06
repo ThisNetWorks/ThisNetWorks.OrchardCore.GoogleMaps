@@ -5,6 +5,12 @@
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <PackageId>ThisNetWorks.OrchardCore.GoogleMaps</PackageId>
+    <Title>GoogleMaps for Orchard Core</Title>
+    <Description>GoogleMaps for Orchard Core</Description>
+  </PropertyGroup>
+
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
