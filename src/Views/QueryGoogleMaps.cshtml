@@ -2,31 +2,26 @@
 @inject ISession Session
 @inject IAutorouteEntries Entries
 @{
-    IQueryIndex<GoogleMapPartIndex> query = null;
     if (Model.ContentType != null)
     {
         var contentType = Model.ContentType as string;
-        query = Session.QueryIndex<GoogleMapPartIndex>(x => x.ContentType == contentType);
-    } else
-    {
-        Session.QueryIndex<GoogleMapPartIndex>();
-    }
-
-    var results = await query.ListAsync();
-    var list = new List<DisplayMapViewModel>();
-    foreach(var result in results)
-    {
-        Entries.TryGetEntryByContentItemId(result.ContentItemId, out var autorouteEntry);
-        var item = new DisplayMapViewModel
+        var query = Session.QueryIndex<GoogleMapPartIndex>(x => x.ContentType == contentType);
+        var results = await query.ListAsync();
+        var list = new List<DisplayMapViewModel>();
+        foreach(var result in results)
         {
-            Lat = result.Lat,
-            Lng = result.Lng,
-            Path = autorouteEntry.Path
-        };
-        list.Add(item);
-    }
+            Entries.TryGetEntryByContentItemId(result.ContentItemId, out var autorouteEntry);
+            var item = new DisplayMapViewModel
+            {
+                Lat = result.Lat,
+                Lng = result.Lng,
+                Path = autorouteEntry.Path
+            };
+            list.Add(item);
+        }
 
-    var serialized = JsonConvert.SerializeObject(list, CamelCaseJsonSerializer.Settings);
+        var serialized = JsonConvert.SerializeObject(list, CamelCaseJsonSerializer.Settings);
+
+        <div class="google-maps-data" data-google-maps-data='@Html.Raw(serialized)' style="display:none"></div>
+    } 
 }
-
-<div class="google-maps-data" data-google-maps-data="@serialized" style="display:none"></div>
