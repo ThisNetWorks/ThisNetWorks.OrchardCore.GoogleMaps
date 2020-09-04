@@ -17,10 +17,10 @@
     var mapInit = function () {
         var mapData = [];    
 
-        var googleMapData = document.querySelector(".google-map-data");
+        var googleMapData = document.querySelectorAll(".google-map-data");
         if (googleMapData) {
             for (var i = 0; i < googleMapData.length; i++) {
-                var data = googleMapData[i].dataset.googleMapsData;
+                var data = googleMapData[i].dataset.googleMapData;
                 if (data) {
                     var items = JSON.parse(data);
                     for (var d = 0; d < items.length; d++) {
