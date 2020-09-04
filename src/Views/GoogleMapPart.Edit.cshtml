@@ -22,7 +22,7 @@
 
 @await DisplayAsync(await New.GoogleMapPartContainer_Edit())
 
-<script at="Foot" type="text/javascript">
+<script asp-name="google-maps-init" at="Foot" depends-on="jQuery">
 
     var autocomplete;
     var map;
@@ -72,19 +72,16 @@
         autocomplete = new google.maps.places.Autocomplete(document.getElementById('@Html.IdFor(m => m.Location)'));
         places = new google.maps.places.PlacesService(map);
 
-        autocomplete.addListener('place_changed', onPlaceChanged);
-        function onPlaceChanged() {
-        var place = autocomplete.getPlace();
-        if (place.geometry) {
-            map.panTo(place.geometry.location);
-            map.setZoom(15);
-            search();
-        } else {
-            document.getElementById('location-input').placeholder = '';
-        }
-      }
+        autocomplete.addListener('place_changed', function () {
+            var place = autocomplete.getPlace();
+            if (place.geometry) {
+                setMarker(place.geometry.location, map);
+            } else {
+                document.getElementById('location-input').placeholder = '';
+            }
+        });
     }
 
 </script>
 
-<script asp-src="https://maps.googleapis.com/maps/api/js?key=@Model.Settings.ApiKey&libraries=places&callback=mapInit" async defer at="Foot"></script>
+<script asp-name="google-maps" asp-src="https://maps.googleapis.com/maps/api/js?key=@Model.Settings.ApiKey&libraries=places&callback=mapInit" at="Foot" depends-on="google-maps-init"></script>

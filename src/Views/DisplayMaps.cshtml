@@ -1,20 +1,7 @@
 ﻿
 @await DisplayAsync(await New.DisplayMapsContainer())
 
-<script at="Foot">
-    var mapData = [];
-    $('.google-map-data').each(function (i, item) {
-        mapData.push($(item).data("google-map-data"));
-    });
-
-    var mapsData = $('.google-maps-data').each(function (i, item) {
-        var items = $(item).data("google-maps-data");
-        items.forEach(function (val) {
-            mapData.push(val);
-        });
-    });
-
-    var mapSettings = $('#google-map-settings').data('google-map-settings');
+<script at="Foot" asp-name="google-maps-init">
 
     var map;
     var setMarker = function (position, path, map) {
@@ -28,6 +15,38 @@
     };
 
     var mapInit = function () {
+        var mapData = [];    
+
+        var googleMapData = document.querySelector(".google-map-data");
+        if (googleMapData) {
+            for (var i = 0; i < googleMapData.length; i++) {
+                var data = googleMapData[i].dataset.googleMapsData;
+                if (data) {
+                    var items = JSON.parse(data);
+                    for (var d = 0; d < items.length; d++) {
+                        mapData.push(items[d]);
+                    }
+                }
+            }
+        }
+
+        var googleMapsData = document.querySelectorAll(".google-maps-data");
+        if (googleMapsData) {
+            for (var i = 0; i < googleMapsData.length; i++) {
+                var data = googleMapsData[i].dataset.googleMapsData;
+                if (data) {
+                    var items = JSON.parse(data);
+                    for (var d = 0; d < items.length; d++) {
+                        mapData.push(items[d]);
+
+                    }
+                }
+            }
+        }
+
+        var mapSettingsData = document.getElementById('google-map-settings').dataset.googleMapSettings;
+        var mapSettings = JSON.parse(mapSettingsData);
+
         map = new google.maps.Map(document.getElementById('google-map'), {
             center: { lat: parseFloat(mapSettings.defaultLat), lng: parseFloat(mapSettings.defaultLng) },
             zoom: 8

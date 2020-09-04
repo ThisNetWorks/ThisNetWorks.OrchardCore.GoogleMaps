@@ -4,4 +4,4 @@
 }
 <div id="google-map-settings" data-google-map-settings='@Html.Raw(mapInfo)' style="display:none"></div>
 
-<script src="https://maps.googleapis.com/maps/api/js?key=@settings.ApiKey&libraries=places&callback=mapInit" async defer at="Foot"></script>
+<script asp-name="google-maps" asp-src="https://maps.googleapis.com/maps/api/js?key=@settings.ApiKey&libraries=places&callback=mapInit" at="Foot" depends-on="google-maps-init"></script>
