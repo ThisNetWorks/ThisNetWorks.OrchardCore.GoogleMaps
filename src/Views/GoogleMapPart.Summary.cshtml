@@ -1,9 +1,16 @@
 ﻿@model GoogleMapPartViewModel
+@inject IOptions<AutorouteOptions> AutorouteOptions
+
 @{
+    var routeValues = new RouteValueDictionary(AutorouteOptions.Value.GlobalRouteValues);
+    routeValues[AutorouteOptions.Value.ContentItemIdKey] = Model.ContentItem.ContentItemId;
+    var url = Url.RouteUrl(routeValues);
+
     var serializable = new DisplayMapViewModel
     {
         Lat = Model.Lat,
-        Lng = Model.Lng
+        Lng = Model.Lng,
+        Path = url
     };
 
     var mapInfo = JsonConvert.SerializeObject(serializable, CamelCaseJsonSerializer.Settings);
