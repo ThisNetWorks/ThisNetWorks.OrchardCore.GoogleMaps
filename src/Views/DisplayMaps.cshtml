@@ -21,12 +21,8 @@
         if (googleMapData) {
             for (var i = 0; i < googleMapData.length; i++) {
                 var data = googleMapData[i].dataset.googleMapData;
-                if (data) {
-                    var items = JSON.parse(data);
-                    for (var d = 0; d < items.length; d++) {
-                        mapData.push(items[d]);
-                    }
-                }
+                var item = JSON.parse(data);
+                mapData.push(item);
             }
         }
 
@@ -38,7 +34,6 @@
                     var items = JSON.parse(data);
                     for (var d = 0; d < items.length; d++) {
                         mapData.push(items[d]);
-
                     }
                 }
             }
@@ -53,13 +48,14 @@
         });
 
         var bounds = new google.maps.LatLngBounds();
-        mapData.forEach(function (item) {
+        for (var i = 0; i < mapData.length; i++) {
+            var item = mapData[i];
             var marker = setMarker(new google.maps.LatLng(parseFloat(item.lat), parseFloat(item.lng)), item.path, map);
             bounds.extend(marker.position);
             google.maps.event.addListener(marker, 'click', function () {
-                window.location.href = this.path;
-            })
-        });
+                window.location.href = item.path;
+            });
+        };
 
         map.fitBounds(bounds);
     }

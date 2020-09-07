@@ -1,6 +1,6 @@
 ﻿@model dynamic
 @inject ISession Session
-@inject IAutorouteEntries Entries
+@inject IOptions<AutorouteOptions> AutorouteOptions
 @{
     if (Model.ContentType != null)
     {
@@ -9,13 +9,15 @@
         var results = await query.ListAsync();
         var list = new List<DisplayMapViewModel>();
         foreach(var result in results)
-        {
-            Entries.TryGetEntryByContentItemId(result.ContentItemId, out var autorouteEntry);
+        {    
+            var routeValues = new RouteValueDictionary(AutorouteOptions.Value.GlobalRouteValues);
+            routeValues[AutorouteOptions.Value.ContentItemIdKey] = result.ContentItemId;
+            var url = Url.RouteUrl(routeValues);
             var item = new DisplayMapViewModel
             {
                 Lat = result.Lat,
                 Lng = result.Lng,
-                Path = autorouteEntry.Path
+                Path = url
             };
             list.Add(item);
         }
