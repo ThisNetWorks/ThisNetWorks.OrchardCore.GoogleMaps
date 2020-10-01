@@ -50,19 +50,19 @@
             $('#@Html.IdFor(m => m.Lng)').val(position.lng());
         };
 
-        @if(!String.IsNullOrEmpty(Model.Lat) && !String.IsNullOrEmpty(Model.Lng))
+        @if(Model.Lat != 0 && Model.Lng != 0)
         {
             <text>
-            setMarker(new google.maps.LatLng(parseFloat(@Model.Lat), parseFloat(@Model.Lng)), map);
+            setMarker(new google.maps.LatLng(@Model.Lat, @Model.Lng), map);
             </text>
         }
 
         $('#@Html.IdFor(m => m.Lat)').change(function () {
-            setMarker(new google.maps.LatLng(parseFloat($(this).val()), parseFloat(@Model.Lng)), map);
+            setMarker(new google.maps.LatLng($(this).val(), @Model.Lng), map);
         })
 
         $('#@Html.IdFor(m => m.Lng)').change(function () {
-            setMarker(new google.maps.LatLng(parseFloat(@Model.Lat), parseFloat($(this).val())), map);
+            setMarker(new google.maps.LatLng(@Model.Lat, $(this).val()), map);
         })
 
         map.addListener('click', function(e) {

@@ -58,8 +58,8 @@ namespace ThisNetWorks.OrchardCore.GoogleMaps.Sample
                 {
                     blogPost.Alter<GoogleMapPart>(part =>
                     {
-                        part.Lat = GoogleMapsSettings.DefaultLatitude.ToString();
-                        part.Lng = GoogleMapsSettings.DefaultLongitude.ToString();
+                        part.Lat = GoogleMapsSettings.DefaultLatitude;
+                        part.Lng = GoogleMapsSettings.DefaultLongitude;
                     });
 
                     _session.Save(blogPost);

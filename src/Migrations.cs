@@ -28,8 +28,8 @@ namespace ThisNetWorks.OrchardCore.GoogleMaps
         public int UpdateFrom1()
         {
             SchemaBuilder.CreateMapIndexTable<GoogleMapPartIndex>(table => table
-                .Column<string>("Lat", col => col.WithLength(25))
-                .Column<string>("Lng", col => col.WithLength(25))
+                .Column<double>("Lat")
+                .Column<double>("Lng")
                 .Column<string>("ContentItemId", c => c.WithLength(26))
                 .Column<string>("ContentType", column => column.WithLength(ContentItemIndex.MaxContentTypeSize))
             );

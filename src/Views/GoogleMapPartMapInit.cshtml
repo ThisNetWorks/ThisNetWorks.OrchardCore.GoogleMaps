@@ -9,10 +9,10 @@
         });
 
 
-        @if(!String.IsNullOrEmpty(Model.Lat) && !String.IsNullOrEmpty(Model.Lng))
+        @if(Model.Lat != 0 && Model.Lng != 0)
         {
             <text>
-            setMarker(new google.maps.LatLng(parseFloat(@Model.Lat), parseFloat(@Model.Lng)), map);
+            setMarker(new google.maps.LatLng(@Model.Lat, @Model.Lng), map);
             </text>
         }
     }

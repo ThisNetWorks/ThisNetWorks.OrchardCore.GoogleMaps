@@ -50,7 +50,7 @@
         var bounds = new google.maps.LatLngBounds();
         for (var i = 0; i < mapData.length; i++) {
             var item = mapData[i];
-            var marker = setMarker(new google.maps.LatLng(parseFloat(item.lat), parseFloat(item.lng)), item.path, map);
+            var marker = setMarker(new google.maps.LatLng(item.lat, item.lng), item.path, map);
             bounds.extend(marker.position);
             google.maps.event.addListener(marker, 'click', function () {
                 window.location.href = item.path;

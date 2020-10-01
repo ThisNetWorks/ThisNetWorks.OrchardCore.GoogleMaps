@@ -10,8 +10,8 @@ namespace ThisNetWorks.OrchardCore.GoogleMaps.Indexes
     {
         public string ContentItemId { get; set; }
         public string ContentType { get; set; }
-        public string Lat { get; set; }
-        public string Lng { get; set; }
+        public double Lat { get; set; }
+        public double Lng { get; set; }
     }
 
     public class GoogleMapPartIndexProvider : IndexProvider<ContentItem>
@@ -28,7 +28,7 @@ namespace ThisNetWorks.OrchardCore.GoogleMaps.Indexes
 
                     var googleMapPart = contentItem.As<GoogleMapPart>();
 
-                    if (googleMapPart == null || String.IsNullOrEmpty(googleMapPart.Lat) || String.IsNullOrEmpty(googleMapPart.Lng))
+                    if (googleMapPart == null || googleMapPart.Lat == 0 || googleMapPart.Lng == 0)
                     {
                         return null;
                     }
