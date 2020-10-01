@@ -12,7 +12,7 @@
         @if(Model.Lat != 0 && Model.Lng != 0)
         {
             <text>
-            setMarker(new google.maps.LatLng(@Model.Lat, @Model.Lng), map);
+            setMarker(new google.maps.LatLng(@Model.Marker.Lat, @Model.Marker.Lng), map);
             </text>
         }
     }

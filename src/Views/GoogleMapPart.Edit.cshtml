@@ -7,15 +7,15 @@
 </div>
 
 <div class="row">
-    <div class="form-group col-12 col-md-6" asp-validation-class-for="Lat">
-        <label asp-for="Lat">@T["Latitude"]</label>
-        <input asp-for="Lat" class="form-control content-preview-text" />
+    <div class="form-group col-12 col-md-6" asp-validation-class-for="Marker.Lat">
+        <label asp-for="Marker.Lat">@T["Latitude"]</label>
+        <input asp-for="Marker.Lat" class="form-control content-preview-text" />
         <span class="hint">@T["Latitude."]</span>
     </div>
 
-    <div class="form-group col-12 col-md-6" asp-validation-class-for="Lng">
-        <label asp-for="Lng">@T["Longitude"] </label>
-        <input asp-for="Lng" class="form-control content-preview-text" />
+    <div class="form-group col-12 col-md-6" asp-validation-class-for="Marker.Lng">
+        <label asp-for="Marker.Lng">@T["Longitude"] </label>
+        <input asp-for="Marker.Lng" class="form-control content-preview-text" />
         <span class="hint">@T["Longitude."]</span>
     </div>
 </div>
@@ -46,23 +46,23 @@
 
             map.panTo(position);
 
-            $('#@Html.IdFor(m => m.Lat)').val(position.lat());
-            $('#@Html.IdFor(m => m.Lng)').val(position.lng());
+            $('#@Html.IdFor(m => m.Marker.Lat)').val(position.lat());
+            $('#@Html.IdFor(m => m.Marker.Lng)').val(position.lng());
         };
 
-        @if(Model.Lat != 0 && Model.Lng != 0)
+        @if(Model.Marker.Lat != 0 && Model.Marker.Lng != 0)
         {
             <text>
-            setMarker(new google.maps.LatLng(@Model.Lat, @Model.Lng), map);
+            setMarker(new google.maps.LatLng(@Model.Marker.Lat, @Model.Marker.Lng), map);
             </text>
         }
 
-        $('#@Html.IdFor(m => m.Lat)').change(function () {
-            setMarker(new google.maps.LatLng($(this).val(), @Model.Lng), map);
+        $('#@Html.IdFor(m => m.Marker.Lat)').change(function () {
+            setMarker(new google.maps.LatLng($(this).val(), @Model.Marker.Lng), map);
         })
 
-        $('#@Html.IdFor(m => m.Lng)').change(function () {
-            setMarker(new google.maps.LatLng(@Model.Lat, $(this).val()), map);
+        $('#@Html.IdFor(m => m.Marker.Lng)').change(function () {
+            setMarker(new google.maps.LatLng(@Model.Marker.Lat, $(this).val()), map);
         })
 
         map.addListener('click', function(e) {

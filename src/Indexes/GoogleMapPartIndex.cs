@@ -28,7 +28,7 @@ namespace ThisNetWorks.OrchardCore.GoogleMaps.Indexes
 
                     var googleMapPart = contentItem.As<GoogleMapPart>();
 
-                    if (googleMapPart == null || googleMapPart.Lat == 0 || googleMapPart.Lng == 0)
+                    if (googleMapPart == null || googleMapPart.Marker.Lat == 0 || googleMapPart.Marker.Lng == 0)
                     {
                         return null;
                     }
@@ -37,8 +37,8 @@ namespace ThisNetWorks.OrchardCore.GoogleMaps.Indexes
                     {
                         ContentItemId = contentItem.ContentItemId,
                         ContentType = contentItem.ContentType,
-                        Lat = googleMapPart.Lat,
-                        Lng = googleMapPart.Lng
+                        Lat = googleMapPart.Marker.Lat,
+                        Lng = googleMapPart.Marker.Lng
                     };
 
                     if (googleMapPartIndex.ContentType?.Length > ContentItemIndex.MaxContentTypeSize)

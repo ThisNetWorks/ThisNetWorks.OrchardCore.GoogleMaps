@@ -38,7 +38,7 @@ namespace ThisNetWorks.OrchardCore.GoogleMaps.Drivers
 
         public override async Task<IDisplayResult> UpdateAsync(GoogleMapPart model, IUpdateModel updater)
         {
-            await updater.TryUpdateModelAsync(model, Prefix, t => t.Location, t => t.Lat, t => t.Lng);
+            await updater.TryUpdateModelAsync(model, Prefix, t => t.Location, t => t.Marker);
 
             return Edit(model);
         }
@@ -49,8 +49,7 @@ namespace ThisNetWorks.OrchardCore.GoogleMaps.Drivers
 
             model.ContentItem = part.ContentItem;
             model.Location = part.Location;
-            model.Lng = part.Lng;
-            model.Lat = part.Lat;
+            model.Marker = part.Marker;
             model.GoogleMapPart = part;
             model.Settings = settings;
         }

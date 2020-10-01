@@ -8,7 +8,7 @@ namespace ThisNetWorks.OrchardCore.GoogleMaps.Models
         /// Location returned from google places, if places has been used to select location.
         /// </summary>
         public string Location { get; set; }
-        public double Lat { get; set; }
-        public double Lng { get; set; }
+
+        public LatLng Marker { get; set; } = new LatLng();
     }
 }

@@ -22,7 +22,7 @@
             for (var i = 0; i < googleMapData.length; i++) {
                 var data = googleMapData[i].dataset.googleMapData;
                 var item = JSON.parse(data);
-                mapData.push(item);
+                mapData.push(item.marker);
             }
         }
 
@@ -33,7 +33,7 @@
                 if (data) {
                     var items = JSON.parse(data);
                     for (var d = 0; d < items.length; d++) {
-                        mapData.push(items[d]);
+                        mapData.push(items[d].marker);
                     }
                 }
             }

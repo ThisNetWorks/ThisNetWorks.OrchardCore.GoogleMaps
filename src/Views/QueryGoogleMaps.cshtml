@@ -15,8 +15,7 @@
             var url = Url.RouteUrl(routeValues);
             var item = new DisplayMapViewModel
             {
-                Lat = result.Lat,
-                Lng = result.Lng,
+                Marker = new LatLng { Lat = result.Lat, Lng = result.Lng },
                 Path = url
             };
             list.Add(item);

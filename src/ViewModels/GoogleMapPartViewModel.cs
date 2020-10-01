@@ -8,8 +8,7 @@ namespace ThisNetWorks.OrchardCore.GoogleMaps.ViewModels
     public class GoogleMapPartViewModel
     {
         public string Location { get; set; }
-        public double Lng { get; set; }
-        public double Lat { get; set; }
+        public LatLng Marker { get; set; }
 
         [BindNever]
         public ContentItem ContentItem { get; set; }
