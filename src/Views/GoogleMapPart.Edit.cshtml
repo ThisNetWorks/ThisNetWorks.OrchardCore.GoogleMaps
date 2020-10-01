@@ -30,7 +30,7 @@
     var marker;
     var mapInit = function () {
         map = new google.maps.Map(document.getElementById('google-map'), {
-            center: { lat: @Model.Settings.DefaultLat, lng: @Model.Settings.DefaultLng },
+            center: { lat: @Model.Settings.DefaultMarker.Lng, lng: @Model.Settings.DefaultMarker.Lng },
             zoom: 8
         });
 

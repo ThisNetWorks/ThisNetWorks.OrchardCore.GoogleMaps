@@ -4,7 +4,7 @@
 
     var mapInit = function () {
         map = new google.maps.Map(document.getElementById('google-map'), {
-            center: { lat: @Model.Settings.DefaultLat, lng: @Model.Settings.DefaultLng },
+            center: { lat: @Model.Settings.DefaultMarker.Lat, lng: @Model.Settings.DefaultMarker.Lng },
             zoom: 8
         });
 

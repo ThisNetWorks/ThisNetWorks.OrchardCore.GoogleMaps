@@ -17,8 +17,7 @@ namespace ThisNetWorks.OrchardCore.GoogleMaps.Settings
             {
                 model.ApiKey = settings.ApiKey;
                 model.Location = settings.Location;
-                model.DefaultLat = settings.DefaultLat;
-                model.DefaultLng = settings.DefaultLng;
+                model.DefaultMarker = settings.DefaultMarker;
                 model.GoogleMapSettings = settings;
 
             }).Location("Content").OnGroup(GroupId);
@@ -30,12 +29,11 @@ namespace ThisNetWorks.OrchardCore.GoogleMaps.Settings
             {
                 var model = new GoogleMapsSettingsViewModel();
 
-                if (await context.Updater.TryUpdateModelAsync(model, Prefix, m => m.ApiKey, m => m.Location, m => m.DefaultLat, m => m.DefaultLng))
+                if (await context.Updater.TryUpdateModelAsync(model, Prefix, m => m.ApiKey, m => m.Location, m => m.DefaultMarker))
                 {
                     settings.ApiKey = model.ApiKey;
                     settings.Location = model.Location;
-                    settings.DefaultLat = model.DefaultLat;
-                    settings.DefaultLng = model.DefaultLng;
+                    settings.DefaultMarker = model.DefaultMarker;
                 }
             }
 

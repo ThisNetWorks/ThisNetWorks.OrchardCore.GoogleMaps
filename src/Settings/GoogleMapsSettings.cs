@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using ThisNetWorks.OrchardCore.GoogleMaps.Models;
 
 namespace ThisNetWorks.OrchardCore.GoogleMaps.Settings
 {
@@ -9,9 +10,7 @@ namespace ThisNetWorks.OrchardCore.GoogleMaps.Settings
 
         public string ApiKey { get; set; }
         public string Location { get; set; }
-        [Required]
-        public double DefaultLat { get; set; } = DefaultLatitude;
-        [Required]
-        public double DefaultLng { get; set; } = DefaultLongitude;
+
+        public LatLng DefaultMarker { get; set; } = new LatLng { Lat = DefaultLatitude, Lng = DefaultLongitude };
     }
 }

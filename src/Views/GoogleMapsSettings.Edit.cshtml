@@ -22,8 +22,8 @@
 
 <div class="form-group">
     <div class="w-lg-50 w-100">
-        <label asp-for="DefaultLat">@T["Default Latitude"]</label>
-        <input asp-for="DefaultLat" type="number" class="form-control" />
+        <label asp-for="DefaultMarker.Lat">@T["Default Latitude"]</label>
+        <input asp-for="DefaultMarker.Lat" class="form-control" />
     </div>
     <div class="w-100">
         <span class="hint">@T["The default latitude to use when selecting a location."]</span>
@@ -32,8 +32,8 @@
 
 <div class="form-group">
     <div class="w-lg-50 w-100">
-        <label asp-for="DefaultLng">@T["Default Longitude"]</label>
-        <input asp-for="DefaultLng" type="number" class="form-control" />
+        <label asp-for="DefaultMarker.Lng">@T["Default Longitude"]</label>
+        <input asp-for="DefaultMarker.Lng" class="form-control" />
     </div>
     <div class="w-100">
         <span class="hint">@T["The default longitude to use when selecting a location."]</span>
@@ -59,7 +59,7 @@ else
         var marker;
         var mapInit = function () {
             map = new google.maps.Map(document.getElementById('google-map'), {
-                center: { lat: @Model.DefaultLat, lng: @Model.DefaultLng },
+                center: { lat: @Model.DefaultMarker.Lat, lng: @Model.DefaultMarker.Lng },
                 zoom: 8
             });
 
@@ -75,23 +75,23 @@ else
 
                 map.panTo(position);
 
-                $('#@Html.IdFor(m => m.DefaultLat)').val(position.lat());
-                $('#@Html.IdFor(m => m.DefaultLng)').val(position.lng());
+                $('#@Html.IdFor(m => m.DefaultMarker.Lat)').val(position.lat());
+                $('#@Html.IdFor(m => m.DefaultMarker.Lng)').val(position.lng());
             };
 
-            @if (Model.DefaultLat != 0 && Model.DefaultLng != 0)
+            @if (Model.DefaultMarker.Lat != 0 && Model.DefaultMarker.Lng != 0)
             {
                 <text>
-                setMarker(new google.maps.LatLng(@Model.DefaultLat, @Model.DefaultLng), map);
+                setMarker(new google.maps.LatLng(@Model.DefaultMarker.Lat, @Model.DefaultMarker.Lng), map);
                 </text>
             }
 
-            $('#@Html.IdFor(m => m.DefaultLat)').change(function () {
-                setMarker(new google.maps.LatLng($(this).val(), $('#@Html.IdFor(m => m.DefaultLng)').val()), map);
+            $('#@Html.IdFor(m => m.DefaultMarker.Lat)').change(function () {
+                setMarker(new google.maps.LatLng($(this).val(), $('#@Html.IdFor(m => m.DefaultMarker.Lng)').val()), map);
             })
 
-            $('#@Html.IdFor(m => m.DefaultLng)').change(function () {
-                setMarker(new google.maps.LatLng($('#@Html.IdFor(m => m.DefaultLat)').val(), $(this).val()), map);
+            $('#@Html.IdFor(m => m.DefaultMarker.Lng)').change(function () {
+                setMarker(new google.maps.LatLng($('#@Html.IdFor(m => m.DefaultMarker.Lat)').val(), $(this).val()), map);
             })
 
             map.addListener('click', function(e) {
