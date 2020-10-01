@@ -3,6 +3,7 @@ using OrchardCore.ContentManagement.Metadata;
 using OrchardCore.Data.Migration;
 using OrchardCore.ContentManagement.Records;
 using ThisNetWorks.OrchardCore.GoogleMaps.Indexes;
+using YesSql.Sql;
 
 namespace ThisNetWorks.OrchardCore.GoogleMaps
 {
@@ -26,7 +27,7 @@ namespace ThisNetWorks.OrchardCore.GoogleMaps
 
         public int UpdateFrom1()
         {
-            SchemaBuilder.CreateMapIndexTable(nameof(GoogleMapPartIndex), table => table
+            SchemaBuilder.CreateMapIndexTable<GoogleMapPartIndex>(table => table
                 .Column<string>("Lat", col => col.WithLength(25))
                 .Column<string>("Lng", col => col.WithLength(25))
                 .Column<string>("ContentItemId", c => c.WithLength(26))

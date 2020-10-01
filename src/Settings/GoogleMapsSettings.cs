@@ -4,14 +4,14 @@ namespace ThisNetWorks.OrchardCore.GoogleMaps.Settings
 {
     public class GoogleMapsSettings
     {
-        public const string DefaultLatitude = "-41.2443487";
-        public const string DefaultLongitude = "174.6916439";
+        public const double DefaultLatitude = -41.2443487;
+        public const double DefaultLongitude = 174.6916439;
 
         public string ApiKey { get; set; }
         public string Location { get; set; }
         [Required]
-        public string DefaultLat { get; set; } = DefaultLatitude;
+        public double DefaultLat { get; set; } = DefaultLatitude;
         [Required]
-        public string DefaultLng { get; set; } = DefaultLongitude;
+        public double DefaultLng { get; set; } = DefaultLongitude;
     }
 }

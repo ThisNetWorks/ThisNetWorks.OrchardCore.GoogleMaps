@@ -10,27 +10,27 @@ namespace ThisNetWorks.OrchardCore.GoogleMaps.Shapes
     {
         public void Discover(ShapeTableBuilder builder)
         {
-            builder.Describe("GoogleMapPart_Summary")
-                .OnDisplaying(displaying =>
-                {
-                    IShape display = displaying.Shape;
+            // builder.Describe("GoogleMapPart_Summary")
+            //     .OnDisplaying(displaying =>
+            //     {
+            //         IShape display = displaying.Shape;
 
-                    if (display.Metadata.Type == "GoogleMapPart_Summary")
-                    {
-                        display.Metadata.Wrappers.Add("DisplayMap_Wrapper__Settings");
-                    }
-                });
+            //         if (display.Metadata.Type == "GoogleMapPart_Summary")
+            //         {
+            //             display.Metadata.Wrappers.Add("DisplayMap_Wrapper__Settings");
+            //         }
+            //     });
 
-            builder.Describe("QueryGoogleMaps")
-                .OnDisplaying(displaying =>
-                {
-                    IShape display = displaying.Shape;
+            // builder.Describe("QueryGoogleMaps")
+            //     .OnDisplaying(displaying =>
+            //     {
+            //         IShape display = displaying.Shape;
 
-                    if (display.Metadata.Type == "QueryGoogleMaps")
-                    {
-                        display.Metadata.Wrappers.Add("DisplayMap_Wrapper__Settings");
-                    }
-                });
+            //         if (display.Metadata.Type == "QueryGoogleMaps")
+            //         {
+            //             display.Metadata.Wrappers.Add("DisplayMap_Wrapper__Settings");
+            //         }
+            //     });
         }
     }
 }

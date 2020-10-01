@@ -1,31 +1,41 @@
 @model ThisNetWorks.OrchardCore.GoogleMaps.Settings.GoogleMapsSettingsViewModel
 
 <div class="form-group">
-    <div class="row col-lg">
+    <div class="w-lg-50 w-100">
         <label asp-for="ApiKey">@T["Api Key"]</label>
         <input asp-for="ApiKey" class="form-control" />
-        <span class="hint">@T["Google Maps Api Key."]</span>
+    </div>
+    <div class="w-100">
+        <span class="hint">@T["Google Maps Api Key."]</span>        
     </div>
 </div>
 
 <div class="form-group" asp-validation-class-for="Location">
-    <label asp-for="Location">@T["Location"]</label>
-    <input asp-for="Location" class="form-control content-preview-text" />
-    <span class="hint">@T["Set default location with Google Maps Places API search."]</span>
+    <div class="w-lg-50 w-100">
+        <label asp-for="Location">@T["Location"]</label>
+        <input asp-for="Location" class="form-control content-preview-text" />
+    </div>
+    <div class="w-100">
+        <span class="hint">@T["Set default location with Google Maps Places API search."]</span>
+    </div>
 </div>
 
 <div class="form-group">
-    <div class="row col-lg">
+    <div class="w-lg-50 w-100">
         <label asp-for="DefaultLat">@T["Default Latitude"]</label>
-        <input asp-for="DefaultLat" class="form-control" />
+        <input asp-for="DefaultLat" type="number" class="form-control" />
+    </div>
+    <div class="w-100">
         <span class="hint">@T["The default latitude to use when selecting a location."]</span>
     </div>
 </div>
 
 <div class="form-group">
-    <div class="row col-lg">
+    <div class="w-lg-50 w-100">
         <label asp-for="DefaultLng">@T["Default Longitude"]</label>
-        <input asp-for="DefaultLng" class="form-control" />
+        <input asp-for="DefaultLng" type="number" class="form-control" />
+    </div>
+    <div class="w-100">
         <span class="hint">@T["The default longitude to use when selecting a location."]</span>
     </div>
 </div>
@@ -69,19 +79,19 @@ else
                 $('#@Html.IdFor(m => m.DefaultLng)').val(position.lng());
             };
 
-            @if (!String.IsNullOrEmpty(Model.DefaultLat) && !String.IsNullOrEmpty(Model.DefaultLng))
+            @if (Model.DefaultLat != 0 && Model.DefaultLng != 0)
             {
                 <text>
-                setMarker(new google.maps.LatLng(parseFloat(@Model.DefaultLat), parseFloat(@Model.DefaultLng)), map);
+                setMarker(new google.maps.LatLng(@Model.DefaultLat, @Model.DefaultLng), map);
                 </text>
             }
 
             $('#@Html.IdFor(m => m.DefaultLat)').change(function () {
-                setMarker(new google.maps.LatLng(parseFloat($(this).val()), parseFloat(@Model.DefaultLat)), map);
+                setMarker(new google.maps.LatLng($(this).val(), $('#@Html.IdFor(m => m.DefaultLng)').val()), map);
             })
 
             $('#@Html.IdFor(m => m.DefaultLng)').change(function () {
-                setMarker(new google.maps.LatLng(parseFloat(@Model.DefaultLng), parseFloat($(this).val())), map);
+                setMarker(new google.maps.LatLng($('#@Html.IdFor(m => m.DefaultLat)').val(), $(this).val()), map);
             })
 
             map.addListener('click', function(e) {

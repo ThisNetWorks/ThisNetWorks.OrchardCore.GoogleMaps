@@ -1,7 +1,7 @@
 ﻿
 @await DisplayAsync(await New.DisplayMapsContainer())
 
-<script at="Foot" asp-name="google-maps-init">
+<script asp-name="google-maps-init" depends-on="jquery" at="Foot">
 
     var map;
     var setMarker = function (position, path, map) {
@@ -43,7 +43,7 @@
         var mapSettings = JSON.parse(mapSettingsData);
 
         map = new google.maps.Map(document.getElementById('google-map'), {
-            center: { lat: parseFloat(mapSettings.defaultLat), lng: parseFloat(mapSettings.defaultLng) },
+            center: { lat: mapSettings.defaultLat, lng: mapSettings.defaultLng },
             zoom: 8
         });
 
@@ -61,3 +61,5 @@
     }
 </script>
 
+@* Due to ordering issues this must be called manually, not through a shape wrapper. *@
+@await DisplayAsync(await New.DisplayMap_Wrapper__Settings())

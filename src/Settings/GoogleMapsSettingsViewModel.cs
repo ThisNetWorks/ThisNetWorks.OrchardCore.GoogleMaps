@@ -6,8 +6,8 @@ namespace ThisNetWorks.OrchardCore.GoogleMaps.Settings
     {
         public string ApiKey { get; set; }
         public string Location { get; set; }
-        public string DefaultLat { get; set; }
-        public string DefaultLng { get; set; }
+        public double DefaultLat { get; set; }
+        public double DefaultLng { get; set; }
 
         [BindNever]
         public GoogleMapsSettings GoogleMapSettings { get; set; }

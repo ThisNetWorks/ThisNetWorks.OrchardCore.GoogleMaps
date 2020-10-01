@@ -1,4 +1,4 @@
-﻿@Model.Metadata.ChildContent
+﻿
 
 @* Inject the settings only once per page *@
 @if (!Context.Items.ContainsKey("DisplayMap__Settings"))
@@ -6,3 +6,4 @@
     Context.Items["DisplayMap__Settings"] = new object();
     @await DisplayAsync(await New.DisplayMap__Settings())
 }
+@Model.Metadata.ChildContent
