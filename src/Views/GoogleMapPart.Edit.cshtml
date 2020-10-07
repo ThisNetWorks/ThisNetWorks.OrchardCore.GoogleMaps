@@ -1,87 +1,174 @@
-@model GoogleMapPartViewModel
+@model GoogleMapPartEditViewModel
 
-<div class="form-group" asp-validation-class-for="Location">
-    <label asp-for="Location">@T["Location"]</label>
-    <input asp-for="Location" class="form-control content-preview-text" />
-    <span class="hint">@T["Location search with Google Maps Places API."]</span>
-</div>
+<script asp-src="~/ThisNetWorks.OrchardCore.GoogleMaps/Scripts/latLngsEditor.min.js" debug-src="~/ThisNetWorks.OrchardCore.GoogleMaps/Scripts/latLngsEditor.js" asp-name="latLngsEditor" at="Foot" depends-on="vuejs, vuedraggable, jQuery"></script>
+<style asp-src="~/ThisNetWorks.OrchardCore.GoogleMaps/Styles/latLngsEditor.min.css" debug-src="~/ThisNetWorks.OrchardCore.GoogleMaps/Styles/latLngsEditor.css"></style>
 
-<div class="row">
-    <div class="form-group col-12 col-md-6" asp-validation-class-for="Marker.Lat">
-        <label asp-for="Marker.Lat">@T["Latitude"]</label>
-        <input asp-for="Marker.Lat" class="form-control content-preview-text" />
-        <span class="hint">@T["Latitude."]</span>
+<script at="Foot" asp-name="google-maps-init">
+    initializeGoogleMapsEditor(document.getElementById('@Html.IdFor(m => m.Json)'), @Html.Raw(Model.Json), document.getElementById('@Html.IdFor(m => m.Json)-ModalBody'));
+</script>
+
+<div id="googleMapSettings" class="d-none" data-lat="@Model.Settings.DefaultMarker.Lat" data-lng="@Model.Settings.DefaultMarker.Lat"></div>
+<script type="text/x-template" id="polygon-metadata-editor">
+    <div>
+        <div class="form-group">
+            <label for="@Html.IdFor(m => m.Json)-PolygonName" class="hint">@T["Name"]</label>
+            <input id="@Html.IdFor(m => m.Json)-PolygonName" type="text" class="form-control" v-model="data.name"/>
+        </div>
+        <div class="form-group">
+            <label for="@Html.IdFor(m => m.Json)-PolygonStrokeColor" class="hint">@T["Stroke Color"]</label>
+            <input id="@Html.IdFor(m => m.Json)-PolygonStrokeColor" type="text" class="form-control" v-model="data.strokeColor"/>
+        </div>
+        <div class="form-group">
+            <label for="@Html.IdFor(m => m.Json)-PolygonStrokeOpacity" class="hint">@T["Stroke Opacity"]</label>
+            <input id="@Html.IdFor(m => m.Json)-PolygonStrokeOpacity" type="text" class="form-control" v-model="data.strokeOpacity"/>
+        </div> 
+        <div class="form-group">
+            <label for="@Html.IdFor(m => m.Json)-PolygonStrokeWeight" class="hint">@T["Stroke Weight"]</label>
+            <input id="@Html.IdFor(m => m.Json)-PolygonStrokeWeight" type="text" class="form-control" v-model="data.strokeWeight"/>
+        </div> 
+        <div class="form-group">
+            <label for="@Html.IdFor(m => m.Json)-PolygonFillColor" class="hint">@T["Fill Color"]</label>
+            <input id="@Html.IdFor(m => m.Json)-PolygonFillColor" type="text" class="form-control" v-model="data.fillColor"/>
+        </div> 
+        <div class="form-group">
+            <label for="@Html.IdFor(m => m.Json)-PolygonFillOpacity" class="hint">@T["Fill Opacity"]</label>
+            <input id="@Html.IdFor(m => m.Json)-PolygonFillOpacity" type="text" class="form-control" v-model="data.fillOpacity"/>
+        </div>        
     </div>
+</script>
 
-    <div class="form-group col-12 col-md-6" asp-validation-class-for="Marker.Lng">
-        <label asp-for="Marker.Lng">@T["Longitude"] </label>
-        <input asp-for="Marker.Lng" class="form-control content-preview-text" />
-        <span class="hint">@T["Longitude."]</span>
+
+<script type="text/x-template" id="marker-editor">
+    <div class="row">
+        <div class="form-group col-11">
+            <label for="@Html.IdFor(m => m.Json)-Location" class="hint" >@T["Location search with Google Maps Places API."]</label>
+            <input id="@Html.IdFor(m => m.Json)-Location" v-model="data.location" class="form-control content-preview-text" ref="location"/>
+        </div>
+        <div class="form-group col-1 d-flex mt-4 align-items-center">
+
+            <a v-on:click="clear()" href="javascript:void(0)" title="@T["Clear marker"]" class="btn"><i class="fas fa-times"></i></a>            
+        </div>
+
+            <div class="form-group col-12 col-md-6">
+                <label for="@Html.IdFor(m => m.Json)-Location" class="hint">@T["Latitude"]</label>
+                <input id="@Html.IdFor(m => m.Json)-Lat" v-model="data.latLng.lat" class="form-control content-preview-text" />
+            </div>
+
+            <div class="form-group col-12 col-md-6">
+                <label for="@Html.IdFor(m => m.Json)-Lng" class="hint">@T["Longitude"]</label>
+                <input id="@Html.IdFor(m => m.Json)-Lng" v-model="data.latLng.lng" class="form-control content-preview-text" />
+            </div>
+    </div>
+</script>
+
+<script type="text/x-template" id="polygon-latlngs-table">
+        <table class="table table-bordered table-sm polygon-latlngs-table">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">@T["Latitude"]</th>
+                    <th scope="col">@T["Longitude"]</th>
+                </tr>
+            </thead>
+            <draggable v-model="data.latLngs" :tag="'tbody'" v-on:end="dragEnd">
+                <!-- so I want to have a selected property here when clicked? -->
+                <tr v-for="(latLng, index) in data.latLngs" :key="index" v-on:click="selectIndex(index)" >
+                    <td>
+                        <input type="text" class="form-control" v-model="latLng.lat" placeholder="Enter a latitude" />
+                    </td>
+                    <td>
+                        <input type="text" class="form-control courier" v-model="latLng.lng" placeholder="Enter a longitude" />
+                    </td>
+                    <td class="text-center">
+                        <a v-on:click="remove(index)" href="javascript:void(0)" title="@T["Remove element from list"]" class="btn"><i class="fas fa-times"></i></a>
+                    </td>
+                    <!-- index == data.selectedIndex ? { 'background-color': '#001bff' } : { 'background-color' : 'inherit' }, index == data.selectedIndex -1 ? { 'background-color': '#007bff' } : { 'background-color' : 'inherit' }-->
+                    <td class="text-center"  v-bind:style="getSelectedColor(index)"><div class="btn cursor-move"><i class="fas fa-arrows-alt"></i></div></td>
+                </tr>
+            </draggable>
+            <tfoot>
+                <tr>
+                    <td class="col-sm-12 text-center" colspan="5">
+                        <a v-on:click="add()" class="btn btn-light w-100 btn-sm"><i class="fas fa-plus small"></i> @T["Add a lat / long"]</a>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+</script>
+
+<script type="text/x-template" id="latlngs-modal">
+    <div class="modal fade text-left" id="@Html.IdFor(m => m.Json)-ModalBody" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">@T["Edit Data"]</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="polygons-textarea">@T["Polygons"]</label>
+                        <textarea id="polygons-textarea" name="polygons-textarea" rows="8" class="form-control" v-bind:value="JSON.stringify(data.polygons, null, 2)" v-on:input="data.polygons = JSON.parse($event.target.value, null, 2)"></textarea>
+                        <span class="hint">@T["A JSON representation of the coordinates, e.g. {0}", "[ { lat: '47.1', lng: '51.1' }, { lat: '46.1', lng: '54.1' } ]"]</span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary btn-submit" v-on:click="closeModal()">@T["OK"]</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">@T["Cancel"]</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<div id="@Html.IdFor(m => m.Json)">
+    <ul class="nav nav-tabs" id="mapTab" role="tablist">
+        <li class="nav-item pr-md-2">
+            <a class="nav-link active" id="tabMarker" data-toggle="tab" href="#tabMarkerContent" role="tab" aria-controls="tabMarkerContent" aria-selected="true">Marker</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="tabPolygons" data-toggle="tab" href="#tabPolygonsContent" role="tab" aria-controls="tabPolygons" aria-selected="false">Polygons</a>
+        </li>
+    </ul>
+
+    <div class="tab-content" id="mapTabContent">
+        <div class="tab-pane fade show active" id="tabMarkerContent" role="tabpanel" data-pointtype="marker" aria-labelledby="tabMarker">
+            <marker-editor v-bind:data="sharedState.marker" ref="markerEditor"></marker-editor>
+        </div>
+    
+    <div class="tab-pane fade" id="tabPolygonsContent" role="tabpanel" data-pointtype="polygon" aria-labelledby="tabPolygons">
+
+            <a href="javascript:void(0)" v-on:click="addPolygon" class="" title="@T["Add Polygon"]"><i class="fas fa-plus"></i></a>
+            <label asp-for="Polygons">@T["Polygons"]</label>
+            <a href="javascript:void(0)" v-on:click="showModal" class="float-right" title="@T["Edit Data"]"><i class="fas fa-edit"></i></a>
+            <div id="polygonAccordion">
+                <div class="card" v-for="(polygon, index) in sharedState.polygons" :key="index">
+                    <div class="card-header" :id="'polygonHeading' + index">
+                        <h5 class="mb-0 d-flex justify-content-between">
+                            <button v-on:click="selectPolygon(index)" class="btn btn-link" type="button" data-toggle="collapse" :data-target="'#polygonCollapse' + index" aria-expanded="true" :aria-controls="'#polygonCollapse' + index">{{ polygon.name }}</button>
+                            <a class="d-flex align-self-center" href="javascript:void(0)" v-on:click="removePolygon(index)" class="" title="@T["Delete Polygon"]"><i class="fa-sm fas fa-trash-alt"></i></a>
+                        </h5>
+                    </div>  
+                    <div :id="'polygonCollapse' + index" class="collapse" v-bind:class="{ show: index == 0}" aria-labelledby="'polygonHeading' + index" data-parent="#polygonAccordion">
+                        <div class="card-body">
+                            <div class="row" >
+                                <div class="col-12 col-md-4">
+                                    <polygon-metadata-editor v-bind:data="polygon" v-bind:index="index"></polygon-metadata-editor>
+                                </div>
+                                <div class="col-12 col-md-8">
+                                    <polygon-latlngs-table v-bind:data="polygon" v-bind:index="index"></polygon-latlngs-table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>          
+                </div>
+            <latlngs-modal :data="sharedState" v-on:reload-data="reloadData()"></latlngs-modal>
+            <input class="form-control" id="@Html.IdFor(m => m.Json)" name="@Html.NameFor(m => m.Json)" type="hidden" v-bind:value="getJson()" /> 
+        </div>
+    </div>
     </div>
 </div>
 
 @await DisplayAsync(await New.GoogleMapPartContainer_Edit())
-
-<script asp-name="google-maps-init" at="Foot" depends-on="jQuery">
-
-    var autocomplete;
-    var map;
-    var setMarker;
-    var marker;
-    var mapInit = function () {
-        map = new google.maps.Map(document.getElementById('google-map'), {
-            center: { lat: @Model.Settings.DefaultMarker.Lng, lng: @Model.Settings.DefaultMarker.Lng },
-            zoom: 8
-        });
-
-        setMarker = function (position, map) {
-            if (marker != undefined) {
-                marker.setMap(null);
-            }
-
-            marker = new google.maps.Marker({
-                position: position,
-                map: map
-            });
-
-            map.panTo(position);
-
-            $('#@Html.IdFor(m => m.Marker.Lat)').val(position.lat());
-            $('#@Html.IdFor(m => m.Marker.Lng)').val(position.lng());
-        };
-
-        @if(Model.Marker.Lat != 0 && Model.Marker.Lng != 0)
-        {
-            <text>
-            setMarker(new google.maps.LatLng(@Model.Marker.Lat, @Model.Marker.Lng), map);
-            </text>
-        }
-
-        $('#@Html.IdFor(m => m.Marker.Lat)').change(function () {
-            setMarker(new google.maps.LatLng($(this).val(), @Model.Marker.Lng), map);
-        })
-
-        $('#@Html.IdFor(m => m.Marker.Lng)').change(function () {
-            setMarker(new google.maps.LatLng(@Model.Marker.Lat, $(this).val()), map);
-        })
-
-        map.addListener('click', function(e) {
-            setMarker(e.latLng, map);
-        });
-
-        autocomplete = new google.maps.places.Autocomplete(document.getElementById('@Html.IdFor(m => m.Location)'));
-        places = new google.maps.places.PlacesService(map);
-
-        autocomplete.addListener('place_changed', function () {
-            var place = autocomplete.getPlace();
-            if (place.geometry) {
-                setMarker(place.geometry.location, map);
-            } else {
-                document.getElementById('location-input').placeholder = '';
-            }
-        });
-    }
-
-</script>
 
 <script asp-name="google-maps" asp-src="https://maps.googleapis.com/maps/api/js?key=@Model.Settings.ApiKey&libraries=places&callback=mapInit" at="Foot" depends-on="google-maps-init"></script>

@@ -9,6 +9,7 @@ namespace ThisNetWorks.OrchardCore.GoogleMaps.ViewModels
     {
         public string Location { get; set; }
         public LatLng Marker { get; set; }
+        public Polygon[] Polygons { get; set; }
 
         [BindNever]
         public ContentItem ContentItem { get; set; }

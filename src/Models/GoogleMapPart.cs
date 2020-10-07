@@ -1,4 +1,6 @@
-﻿using OrchardCore.ContentManagement;
+﻿using System;
+using System.Collections.Generic;
+using OrchardCore.ContentManagement;
 
 namespace ThisNetWorks.OrchardCore.GoogleMaps.Models
 {
@@ -10,5 +12,8 @@ namespace ThisNetWorks.OrchardCore.GoogleMaps.Models
         public string Location { get; set; }
 
         public LatLng Marker { get; set; } = new LatLng();
+
+        public Polygon[] Polygons { get; set; } = Array.Empty<Polygon>();
+
     }
 }

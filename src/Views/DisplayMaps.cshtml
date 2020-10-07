@@ -43,7 +43,7 @@
         var mapSettings = JSON.parse(mapSettingsData);
 
         map = new google.maps.Map(document.getElementById('google-map'), {
-            center: { lat: mapSettings.defaultLat, lng: mapSettings.defaultLng },
+            center: { lat: mapSettings.defaultMarker.lat, lng: mapSettings.defaultMarker.lng },
             zoom: 8
         });
 
