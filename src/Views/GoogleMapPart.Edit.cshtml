@@ -11,28 +11,28 @@
 <script type="text/x-template" id="polygon-metadata-editor">
     <div>
         <div class="form-group">
-            <label for="@Html.IdFor(m => m.Json)-PolygonName" class="hint">@T["Name"]</label>
-            <input id="@Html.IdFor(m => m.Json)-PolygonName" type="text" class="form-control" v-model="data.name"/>
+            <label :for="jsonid + 'Name' + index"class="hint">@T["Name"]</label>
+            <input :id="jsonid + 'Name' +  index" type="text" class="form-control" v-model="data.name"/>
         </div>
         <div class="form-group">
-            <label for="@Html.IdFor(m => m.Json)-PolygonStrokeColor" class="hint">@T["Stroke Color"]</label>
-            <input id="@Html.IdFor(m => m.Json)-PolygonStrokeColor" type="text" class="form-control" v-model="data.strokeColor"/>
+            <label :for="jsonid + 'StrokeColor' + index" class="hint">@T["Stroke Color"]</label>
+            <input :id="jsonid + 'StrokeColor' +  index" type="text" class="form-control" v-model="data.strokeColor"/>
         </div>
         <div class="form-group">
-            <label for="@Html.IdFor(m => m.Json)-PolygonStrokeOpacity" class="hint">@T["Stroke Opacity"]</label>
-            <input id="@Html.IdFor(m => m.Json)-PolygonStrokeOpacity" type="text" class="form-control" v-model="data.strokeOpacity"/>
+            <label :for="jsonid + 'StrokeOpacity' + index" class="hint">@T["Stroke Opacity"]</label>
+            <input :id="jsonid + 'StrokeOpacity' +  index" type="text" class="form-control" v-model="data.strokeOpacity"/>
         </div> 
         <div class="form-group">
-            <label for="@Html.IdFor(m => m.Json)-PolygonStrokeWeight" class="hint">@T["Stroke Weight"]</label>
-            <input id="@Html.IdFor(m => m.Json)-PolygonStrokeWeight" type="text" class="form-control" v-model="data.strokeWeight"/>
+            <label :for="jsonid + 'PolygonStrokeWeight' + index" class="hint">@T["Stroke Weight"]</label>
+            <input :id="jsonid + 'PolygonStrokeWeight' +  index" type="text" class="form-control" v-model="data.strokeWeight"/>
         </div> 
         <div class="form-group">
-            <label for="@Html.IdFor(m => m.Json)-PolygonFillColor" class="hint">@T["Fill Color"]</label>
-            <input id="@Html.IdFor(m => m.Json)-PolygonFillColor" type="text" class="form-control" v-model="data.fillColor"/>
+            <label :for="jsonid + 'PolygonFillColor' + index" class="hint">@T["Fill Color"]</label>
+            <input :id="jsonid + 'PolygonFillColor' +  index" type="text" class="form-control" v-model="data.fillColor"/>
         </div> 
         <div class="form-group">
-            <label for="@Html.IdFor(m => m.Json)-PolygonFillOpacity" class="hint">@T["Fill Opacity"]</label>
-            <input id="@Html.IdFor(m => m.Json)-PolygonFillOpacity" type="text" class="form-control" v-model="data.fillOpacity"/>
+            <label :for="jsonid + 'PolygonFillOpacity' + index" class="hint">@T["Fill Opacity"]</label>
+            <input :id="jsonid + 'PolygonFillOpacity' +  index" type="text" class="form-control" v-model="data.fillOpacity"/>
         </div>        
     </div>
 </script>
@@ -70,7 +70,6 @@
                 </tr>
             </thead>
             <draggable v-model="data.latLngs" :tag="'tbody'" v-on:end="dragEnd">
-                <!-- so I want to have a selected property here when clicked? -->
                 <tr v-for="(latLng, index) in data.latLngs" :key="index" v-on:click="selectIndex(index)" >
                     <td>
                         <input type="text" class="form-control" v-model="latLng.lat" placeholder="Enter a latitude" />
@@ -81,7 +80,6 @@
                     <td class="text-center">
                         <a v-on:click="remove(index)" href="javascript:void(0)" title="@T["Remove element from list"]" class="btn"><i class="fas fa-times"></i></a>
                     </td>
-                    <!-- index == data.selectedIndex ? { 'background-color': '#001bff' } : { 'background-color' : 'inherit' }, index == data.selectedIndex -1 ? { 'background-color': '#007bff' } : { 'background-color' : 'inherit' }-->
                     <td class="text-center"  v-bind:style="getSelectedColor(index)"><div class="btn cursor-move"><i class="fas fa-arrows-alt"></i></div></td>
                 </tr>
             </draggable>
@@ -136,7 +134,7 @@
             <marker-editor v-bind:data="sharedState.marker" ref="markerEditor"></marker-editor>
         </div>
     
-    <div class="tab-pane fade" id="tabPolygonsContent" role="tabpanel" data-pointtype="polygon" aria-labelledby="tabPolygons">
+        <div class="tab-pane fade" id="tabPolygonsContent" role="tabpanel" data-pointtype="polygon" aria-labelledby="tabPolygons">
 
             <a href="javascript:void(0)" v-on:click="addPolygon" class="" title="@T["Add Polygon"]"><i class="fas fa-plus"></i></a>
             <label asp-for="Polygons">@T["Polygons"]</label>
@@ -153,7 +151,7 @@
                         <div class="card-body">
                             <div class="row" >
                                 <div class="col-12 col-md-4">
-                                    <polygon-metadata-editor v-bind:data="polygon" v-bind:index="index"></polygon-metadata-editor>
+                                    <polygon-metadata-editor v-bind:data="polygon" v-bind:index="index" v-bind:jsonid="'@Html.IdFor(m => m.Json)'"></polygon-metadata-editor>
                                 </div>
                                 <div class="col-12 col-md-8">
                                     <polygon-latlngs-table v-bind:data="polygon" v-bind:index="index"></polygon-latlngs-table>
@@ -162,10 +160,10 @@
                         </div>
                     </div>          
                 </div>
+            </div>
             <latlngs-modal :data="sharedState" v-on:reload-data="reloadData()"></latlngs-modal>
             <input class="form-control" id="@Html.IdFor(m => m.Json)" name="@Html.NameFor(m => m.Json)" type="hidden" v-bind:value="getJson()" /> 
         </div>
-    </div>
     </div>
 </div>
 

@@ -33,9 +33,9 @@ var mapInit = function mapInit() {
 };
 
 function initializeGoogleMapsEditor(elem, data, modalBodyElement) {
-  var selectedPolygon;
-  var selectedPolygonIndex;
-  var polygons = []; // we can move this mess into a function on state
+  var initialPolygon;
+  var initialPolygonIndex;
+  var polygons = [];
 
   if (data.polygons.length > 0) {
     polygons = data.polygons.map(function (polygon) {
@@ -50,8 +50,8 @@ function initializeGoogleMapsEditor(elem, data, modalBodyElement) {
         selectedIndex: polygon.latLngs.length > 0 ? polygon.latLngs.length - 1 : 0
       };
     });
-    selectedPolygon = polygons[0];
-    selectedPolygonIndex = 0;
+    initialPolygon = polygons[0];
+    initialPolygonIndex = 0;
   }
 
   var polygonShapes = [];
@@ -63,8 +63,8 @@ function initializeGoogleMapsEditor(elem, data, modalBodyElement) {
       defaultLocation: data.defaultLocation,
       marker: data.marker,
       polygons: polygons,
-      selectedPolygon: selectedPolygon,
-      selectedPolygonIndex: selectedPolygonIndex
+      selectedPolygon: initialPolygon,
+      selectedPolygonIndex: initialPolygonIndex
     },
     addPolygon: function addPolygon() {
       this.state.polygons.push({
@@ -83,36 +83,57 @@ function initializeGoogleMapsEditor(elem, data, modalBodyElement) {
       this.setAllMapShapes();
     },
     selectPolygon: function selectPolygon(index) {
-      this.state.selectedPolygon = this.state.polygons.slice(index, 1)[0];
+      this.state.selectedPolygon = this.state.polygons[index];
       this.state.selectedPolygonIndex = index;
+      this.setAllMapShapes();
     },
     selectPolygonLatLngIndex: function selectPolygonLatLngIndex(index) {
       this.state.selectedPolygon.selectedIndex = index;
       this.setPolygons();
     },
     addPolygonLatLng: function addPolygonLatLng() {
-      var polygon = this.state.polygons.splice(selectedPolygonIndex, 1)[0];
+      var polygon = this.state.polygons.splice(this.state.selectedPolygonIndex, 1)[0];
+      var newIndex = 0;
+
+      if (polygon.latLngs.length != 0) {
+        newIndex = polygon.selectedIndex + 1;
+      }
+
+      polygon.selectedIndex = newIndex;
       polygon.latLngs.push({
         lat: '',
         lng: ''
       });
-      this.state.polygons.splice(selectedPolygonIndex, 0, polygon);
+      this.state.polygons.splice(this.state.selectedPolygonIndex, 0, polygon);
       this.setAllMapShapes();
     },
     addPolygonLatLngs: function addPolygonLatLngs(latLngs) {
-      var polygon = this.state.polygons.splice(selectedPolygonIndex, 1)[0];
-      polygon.latLngs.splice(polygon.selectedIndex + 1, 0, {
+      var polygon = this.state.polygons.splice(this.state.selectedPolygonIndex, 1)[0];
+      var newIndex = 0;
+
+      if (polygon.latLngs.length != 0) {
+        newIndex = polygon.selectedIndex + 1;
+      }
+
+      polygon.latLngs.splice(newIndex, 0, {
         lat: latLngs.lat(),
         lng: latLngs.lng()
       });
-      polygon.selectedIndex = polygon.selectedIndex + 1;
-      this.state.polygons.splice(selectedPolygonIndex, 0, polygon);
+      polygon.selectedIndex = newIndex;
+      this.state.polygons.splice(this.state.selectedPolygonIndex, 0, polygon);
       this.setAllMapShapes();
     },
     removePolygonLatLng: function removePolygonLatLng(index) {
-      var polygon = this.state.polygons.splice(selectedPolygonIndex, 1)[0];
+      var polygon = this.state.polygons.splice(this.state.selectedPolygonIndex, 1)[0];
       polygon.latLngs.splice(index, 1);
-      this.state.polygons.splice(selectedPolygonIndex, 0, polygon);
+      var newIndex = 0;
+
+      if (polygon.latLngs.length != 0) {
+        newIndex = polygon.selectedIndex - 1;
+      }
+
+      polygon.selectedIndex = newIndex;
+      this.state.polygons.splice(this.state.selectedPolygonIndex, 0, polygon);
       this.setAllMapShapes();
     },
     getJson: function getJson() {
@@ -207,16 +228,16 @@ function initializeGoogleMapsEditor(elem, data, modalBodyElement) {
             points.push(latLng);
             var strokeColor = 'black';
 
-            if (polygon.selectedIndex == pointI) {
-              strokeColor = '#001bff';
-            } // if it's the last one in the index it goes to the first
-            // otherwise it goes to the next
-
-
-            if (polygon.selectedIndex == polygon.latLngs.length - 1 && pointI == 0) {
-              strokeColor = '#007bff';
-            } else if (polygon.selectedIndex != polygon.latLngs.length - 1 && pointI == polygon.selectedIndex + 1) {
-              strokeColor = '#007bff';
+            if (self.state.selectedPolygonIndex == polygonI) {
+              if (polygon.selectedIndex == pointI) {
+                strokeColor = '#001bff';
+              } // if it's the last one in the index it goes to the first
+              // otherwise it goes to the next
+              else if (polygon.selectedIndex == polygon.latLngs.length - 1 && pointI == 0) {
+                  strokeColor = '#007bff';
+                } else if (polygon.selectedIndex != polygon.latLngs.length - 1 && pointI == polygon.selectedIndex + 1) {
+                  strokeColor = '#007bff';
+                }
             }
 
             var marker = new google.maps.Marker({
@@ -224,7 +245,6 @@ function initializeGoogleMapsEditor(elem, data, modalBodyElement) {
               icon: {
                 path: google.maps.SymbolPath.CIRCLE,
                 scale: 5,
-                //   strokeColor: '#ff0'
                 strokeColor: strokeColor
               },
               draggable: true,
@@ -233,11 +253,9 @@ function initializeGoogleMapsEditor(elem, data, modalBodyElement) {
             markers.push(marker);
             var listener = google.maps.event.addListener(marker, 'dragend', function (e) {
               var draggedPolygon = self.state.polygons.splice(polygonI, 1)[0];
-              var latLng = draggedPolygon.latLngs.splice(pointI, 1)[0];
+              var latLng = draggedPolygon.latLngs[pointI];
               latLng.lat = e.latLng.lat();
               latLng.lng = e.latLng.lng();
-              draggedPolygon.latLngs.splice(pointI, 0, latLng); // marker.icon.strokeColor = '#ff0';
-
               draggedPolygon.selectedIndex = pointI;
               self.state.polygons.splice(polygonI, 0, draggedPolygon);
               self.setPolygons();
@@ -247,32 +265,30 @@ function initializeGoogleMapsEditor(elem, data, modalBodyElement) {
         });
 
         if (polygonShapes[polygonI] && polygonShapes[polygonI].shape) {
-          polygonShapes[polygonI].shape.setMap(null);
-          polygonShapes[polygonI].markers.forEach(function (marker) {
-            marker.setMap(null);
-            marker = null;
-          });
           polygonShapes[polygonI].listeners.forEach(function (listener) {
             google.maps.event.removeListener(listener);
             listener = null;
           });
+          polygonShapes[polygonI].markers.forEach(function (marker, index) {
+            marker.setMap(null);
+            marker = null;
+          });
+          polygonShapes[polygonI].shape.setMap(null);
         }
 
-        if (points.length > 1) {
-          polygonShapes[polygonI] = {
-            shape: new google.maps.Polygon({
-              paths: points,
-              strokeColor: polygon.strokeColor,
-              strokeOpacity: polygon.strokeOpacity,
-              strokeWeight: polygon.strokeWeight,
-              fillColor: polygon.fillColor,
-              fillOpacity: polygon.fillOpacity
-            }),
-            markers: markers,
-            listeners: listeners
-          };
-          polygonShapes[polygonI].shape.setMap(map);
-        }
+        polygonShapes[polygonI] = {
+          shape: new google.maps.Polygon({
+            paths: points,
+            strokeColor: polygon.strokeColor,
+            strokeOpacity: polygon.strokeOpacity,
+            strokeWeight: polygon.strokeWeight,
+            fillColor: polygon.fillColor,
+            fillOpacity: polygon.fillOpacity
+          }),
+          markers: markers,
+          listeners: listeners
+        };
+        polygonShapes[polygonI].shape.setMap(map);
       });
     }
   };
@@ -301,7 +317,7 @@ function initializeGoogleMapsEditor(elem, data, modalBodyElement) {
   };
   var polygonMetadataEditor = {
     template: '#polygon-metadata-editor',
-    props: ['data', 'index'],
+    props: ['data', 'index', 'jsonid'],
     name: 'polygon-metadata-editor',
     methods: {
       remove: function remove() {
@@ -311,7 +327,7 @@ function initializeGoogleMapsEditor(elem, data, modalBodyElement) {
   };
   var polygonLatlngsTable = {
     template: '#polygon-latlngs-table',
-    props: ['data'],
+    props: ['data', 'index'],
     name: 'polygon-latlngs-table',
     methods: {
       add: function add() {
