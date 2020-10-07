@@ -26,8 +26,7 @@ var mapInit = function () {
     }); 
 };
 
-function initializeGoogleMapsEditor(elem, data, modalBodyElement) {
-
+function initializeGoogleMapsEditor(elem, data, modalBodyId) {
     var initialPolygon;
     var initialPolygonIndex;
     var polygons = [];
@@ -347,13 +346,14 @@ function initializeGoogleMapsEditor(elem, data, modalBodyElement) {
         name: 'latlngs-modal',
         methods: {
             showModal: function () {
-                $(modalBodyElement).modal();
+                $('#' + modalBodyId).modal();
             },
             closeModal: function () {
-                var modal = $(modalBodyElement).modal();
+                var modal = $('#' + modalBodyId).modal();
                 modal.modal('hide');
                 store.setPolygons();
             }
+
         }
     };
 

@@ -1,10 +1,10 @@
 @model GoogleMapPartEditViewModel
 
-<script asp-src="~/ThisNetWorks.OrchardCore.GoogleMaps/Scripts/latLngsEditor.min.js" debug-src="~/ThisNetWorks.OrchardCore.GoogleMaps/Scripts/latLngsEditor.js" asp-name="latLngsEditor" at="Foot" depends-on="vuejs, vuedraggable, jQuery"></script>
-<style asp-src="~/ThisNetWorks.OrchardCore.GoogleMaps/Styles/latLngsEditor.min.css" debug-src="~/ThisNetWorks.OrchardCore.GoogleMaps/Styles/latLngsEditor.css"></style>
+<script asp-src="~/ThisNetWorks.OrchardCore.GoogleMaps/Scripts/googleMapsEditor.min.js" debug-src="~/ThisNetWorks.OrchardCore.GoogleMaps/Scripts/googleMapsEditor.js" asp-name="latLngsEditor" at="Foot" depends-on="vuejs, vuedraggable, jQuery"></script>
+<style asp-src="~/ThisNetWorks.OrchardCore.GoogleMaps/Styles/googleMapsEditor.min.css" debug-src="~/ThisNetWorks.OrchardCore.GoogleMaps/Styles/googleMapsEditor.css"></style>
 
 <script at="Foot" asp-name="google-maps-init">
-    initializeGoogleMapsEditor(document.getElementById('@Html.IdFor(m => m.Json)'), @Html.Raw(Model.Json), document.getElementById('@Html.IdFor(m => m.Json)-ModalBody'));
+    initializeGoogleMapsEditor(document.getElementById('@Html.IdFor(m => m.Json)'), @Html.Raw(Model.Json), '@Html.IdFor(m => m.Json)-Modal');
 </script>
 
 <div id="googleMapSettings" class="d-none" data-lat="@Model.Settings.DefaultMarker.Lat" data-lng="@Model.Settings.DefaultMarker.Lat"></div>
@@ -37,7 +37,6 @@
     </div>
 </script>
 
-
 <script type="text/x-template" id="marker-editor">
     <div class="row">
         <div class="form-group col-11">
@@ -45,19 +44,18 @@
             <input id="@Html.IdFor(m => m.Json)-Location" v-model="data.location" class="form-control content-preview-text" ref="location"/>
         </div>
         <div class="form-group col-1 d-flex mt-4 align-items-center">
-
             <a v-on:click="clear()" href="javascript:void(0)" title="@T["Clear marker"]" class="btn"><i class="fas fa-times"></i></a>            
         </div>
 
-            <div class="form-group col-12 col-md-6">
-                <label for="@Html.IdFor(m => m.Json)-Location" class="hint">@T["Latitude"]</label>
-                <input id="@Html.IdFor(m => m.Json)-Lat" v-model="data.latLng.lat" class="form-control content-preview-text" />
-            </div>
+        <div class="form-group col-12 col-md-6">
+            <label for="@Html.IdFor(m => m.Json)-Location" class="hint">@T["Latitude"]</label>
+            <input id="@Html.IdFor(m => m.Json)-Lat" v-model="data.latLng.lat" class="form-control content-preview-text" />
+        </div>
 
-            <div class="form-group col-12 col-md-6">
-                <label for="@Html.IdFor(m => m.Json)-Lng" class="hint">@T["Longitude"]</label>
-                <input id="@Html.IdFor(m => m.Json)-Lng" v-model="data.latLng.lng" class="form-control content-preview-text" />
-            </div>
+        <div class="form-group col-12 col-md-6">
+            <label for="@Html.IdFor(m => m.Json)-Lng" class="hint">@T["Longitude"]</label>
+            <input id="@Html.IdFor(m => m.Json)-Lng" v-model="data.latLng.lng" class="form-control content-preview-text" />
+        </div>
     </div>
 </script>
 
@@ -80,7 +78,9 @@
                     <td class="text-center">
                         <a v-on:click="remove(index)" href="javascript:void(0)" title="@T["Remove element from list"]" class="btn"><i class="fas fa-times"></i></a>
                     </td>
-                    <td class="text-center"  v-bind:style="getSelectedColor(index)"><div class="btn cursor-move"><i class="fas fa-arrows-alt"></i></div></td>
+                    <td class="text-center" v-bind:style="getSelectedColor(index)">
+                        <div class="btn cursor-move"><i class="fas fa-arrows-alt"></i></div>
+                    </td>
                 </tr>
             </draggable>
             <tfoot>
@@ -94,7 +94,7 @@
 </script>
 
 <script type="text/x-template" id="latlngs-modal">
-    <div class="modal fade text-left" id="@Html.IdFor(m => m.Json)-ModalBody" role="dialog" aria-hidden="true">
+    <div class="modal fade text-left" role="dialog" aria-hidden="true" id="@Html.IdFor(m => m.Json)-Modal">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -135,7 +135,6 @@
         </div>
     
         <div class="tab-pane fade" id="tabPolygonsContent" role="tabpanel" data-pointtype="polygon" aria-labelledby="tabPolygons">
-
             <a href="javascript:void(0)" v-on:click="addPolygon" class="" title="@T["Add Polygon"]"><i class="fas fa-plus"></i></a>
             <label asp-for="Polygons">@T["Polygons"]</label>
             <a href="javascript:void(0)" v-on:click="showModal" class="float-right" title="@T["Edit Data"]"><i class="fas fa-edit"></i></a>
