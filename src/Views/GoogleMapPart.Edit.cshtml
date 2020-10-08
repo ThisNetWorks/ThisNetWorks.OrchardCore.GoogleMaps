@@ -9,39 +9,39 @@
 
 <div id="googleMapSettings" class="d-none" data-lat="@Model.Settings.DefaultMarker.Lat" data-lng="@Model.Settings.DefaultMarker.Lat"></div>
 <script type="text/x-template" id="polygon-metadata-editor">
-    <div>
-        <div class="form-group">
+    <div class="maps-editor row">
+        <div class="form-group col-12">
             <label :for="jsonid + 'Name' + index"class="hint">@T["Name"]</label>
             <input :id="jsonid + 'Name' +  index" type="text" class="form-control" v-model="data.name"/>
         </div>
-        <div class="form-group">
+        <div class="form-group col-12">
             <label :for="jsonid + 'StrokeColor' + index" class="hint">@T["Stroke Color"]</label>
-            <input :id="jsonid + 'StrokeColor' +  index" type="text" class="form-control" v-model="data.strokeColor"/>
+            <input :id="jsonid + 'StrokeColor' +  index" type="text" class="form-control courier" v-model="data.strokeColor"/>
         </div>
-        <div class="form-group">
+        <div class="form-group col-6">
             <label :for="jsonid + 'StrokeOpacity' + index" class="hint">@T["Stroke Opacity"]</label>
-            <input :id="jsonid + 'StrokeOpacity' +  index" type="text" class="form-control" v-model="data.strokeOpacity"/>
+            <input :id="jsonid + 'StrokeOpacity' +  index" type="text" class="form-control courier" v-model="data.strokeOpacity"/>
         </div> 
-        <div class="form-group">
+        <div class="form-group col-6">
             <label :for="jsonid + 'PolygonStrokeWeight' + index" class="hint">@T["Stroke Weight"]</label>
-            <input :id="jsonid + 'PolygonStrokeWeight' +  index" type="text" class="form-control" v-model="data.strokeWeight"/>
+            <input :id="jsonid + 'PolygonStrokeWeight' +  index" type="text" class="form-control courier" v-model="data.strokeWeight"/>
         </div> 
-        <div class="form-group">
+        <div class="form-group col-6">
             <label :for="jsonid + 'PolygonFillColor' + index" class="hint">@T["Fill Color"]</label>
-            <input :id="jsonid + 'PolygonFillColor' +  index" type="text" class="form-control" v-model="data.fillColor"/>
+            <input :id="jsonid + 'PolygonFillColor' +  index" type="text" class="form-control courier" v-model="data.fillColor"/>
         </div> 
-        <div class="form-group">
+        <div class="form-group col-6">
             <label :for="jsonid + 'PolygonFillOpacity' + index" class="hint">@T["Fill Opacity"]</label>
-            <input :id="jsonid + 'PolygonFillOpacity' +  index" type="text" class="form-control" v-model="data.fillOpacity"/>
+            <input :id="jsonid + 'PolygonFillOpacity' +  index" type="text" class="form-control courier" v-model="data.fillOpacity"/>
         </div>        
     </div>
 </script>
 
 <script type="text/x-template" id="marker-editor">
-    <div class="row">
+    <div class="row maps-editor">
         <div class="form-group col-11">
             <label for="@Html.IdFor(m => m.Json)-Location" class="hint" >@T["Location search with Google Maps Places API."]</label>
-            <input id="@Html.IdFor(m => m.Json)-Location" v-model="data.location" class="form-control content-preview-text" ref="location"/>
+            <input id="@Html.IdFor(m => m.Json)-Location" v-model="data.location" class="form-control content-preview-text " ref="location"/>
         </div>
         <div class="form-group col-1 d-flex mt-4 align-items-center">
             <a v-on:click="clear()" href="javascript:void(0)" title="@T["Clear marker"]" class="btn"><i class="fas fa-times"></i></a>            
@@ -49,18 +49,18 @@
 
         <div class="form-group col-12 col-md-6">
             <label for="@Html.IdFor(m => m.Json)-Location" class="hint">@T["Latitude"]</label>
-            <input id="@Html.IdFor(m => m.Json)-Lat" v-model="data.latLng.lat" class="form-control content-preview-text" />
+            <input id="@Html.IdFor(m => m.Json)-Lat" v-model="data.latLng.lat" class="form-control content-preview-text courier" />
         </div>
 
         <div class="form-group col-12 col-md-6">
             <label for="@Html.IdFor(m => m.Json)-Lng" class="hint">@T["Longitude"]</label>
-            <input id="@Html.IdFor(m => m.Json)-Lng" v-model="data.latLng.lng" class="form-control content-preview-text" />
+            <input id="@Html.IdFor(m => m.Json)-Lng" v-model="data.latLng.lng" class="form-control content-preview-text courier" />
         </div>
     </div>
 </script>
 
 <script type="text/x-template" id="polygon-latlngs-table">
-        <table class="table table-bordered table-sm polygon-latlngs-table">
+        <table class="table table-bordered table-sm maps-editor">
             <thead class="thead-light">
                 <tr>
                     <th scope="col">@T["Latitude"]</th>
@@ -70,7 +70,7 @@
             <draggable v-model="data.latLngs" :tag="'tbody'" v-on:end="dragEnd">
                 <tr v-for="(latLng, index) in data.latLngs" :key="index" v-on:click="selectIndex(index)" >
                     <td>
-                        <input type="text" class="form-control" v-model="latLng.lat" placeholder="Enter a latitude" />
+                        <input type="text" class="form-control courier" v-model="latLng.lat" placeholder="Enter a latitude" />
                     </td>
                     <td>
                         <input type="text" class="form-control courier" v-model="latLng.lng" placeholder="Enter a longitude" />

@@ -80,16 +80,13 @@ function initializeGoogleMapsEditor(elem, data, modalBodyId) {
     },
     removePolygon: function removePolygon(index) {
       this.state.polygons.splice(index, 1);
-      this.setAllMapShapes();
     },
     selectPolygon: function selectPolygon(index) {
       this.state.selectedPolygon = this.state.polygons[index];
       this.state.selectedPolygonIndex = index;
-      this.setAllMapShapes();
     },
     selectPolygonLatLngIndex: function selectPolygonLatLngIndex(index) {
       this.state.selectedPolygon.selectedIndex = index;
-      this.setPolygons();
     },
     addPolygonLatLng: function addPolygonLatLng() {
       var polygon = this.state.polygons.splice(this.state.selectedPolygonIndex, 1)[0];
@@ -105,7 +102,6 @@ function initializeGoogleMapsEditor(elem, data, modalBodyId) {
         lng: ''
       });
       this.state.polygons.splice(this.state.selectedPolygonIndex, 0, polygon);
-      this.setAllMapShapes();
     },
     addPolygonLatLngs: function addPolygonLatLngs(latLngs) {
       var polygon = this.state.polygons.splice(this.state.selectedPolygonIndex, 1)[0];
@@ -121,7 +117,6 @@ function initializeGoogleMapsEditor(elem, data, modalBodyId) {
       });
       polygon.selectedIndex = newIndex;
       this.state.polygons.splice(this.state.selectedPolygonIndex, 0, polygon);
-      this.setAllMapShapes();
     },
     removePolygonLatLng: function removePolygonLatLng(index) {
       var polygon = this.state.polygons.splice(this.state.selectedPolygonIndex, 1)[0];
@@ -134,7 +129,6 @@ function initializeGoogleMapsEditor(elem, data, modalBodyId) {
 
       polygon.selectedIndex = newIndex;
       this.state.polygons.splice(this.state.selectedPolygonIndex, 0, polygon);
-      this.setAllMapShapes();
     },
     getJson: function getJson() {
       return JSON.stringify({
@@ -226,9 +220,11 @@ function initializeGoogleMapsEditor(elem, data, modalBodyId) {
           if (point.lat && point.lng) {
             var latLng = new google.maps.LatLng(point.lat, point.lng);
             points.push(latLng);
-            var strokeColor = 'black';
+            var strokeColor = 'gray';
 
             if (self.state.selectedPolygonIndex == polygonI) {
+              var strokeColor = 'gold';
+
               if (polygon.selectedIndex == pointI) {
                 strokeColor = '#001bff';
               } // if it's the last one in the index it goes to the first
@@ -245,7 +241,9 @@ function initializeGoogleMapsEditor(elem, data, modalBodyId) {
               icon: {
                 path: google.maps.SymbolPath.CIRCLE,
                 scale: 5,
-                strokeColor: strokeColor
+                strokeColor: strokeColor,
+                fillColor: strokeColor,
+                fillOpacity: 1.0
               },
               draggable: true,
               map: map
@@ -371,7 +369,6 @@ function initializeGoogleMapsEditor(elem, data, modalBodyId) {
       closeModal: function closeModal() {
         var modal = $('#' + modalBodyId).modal();
         modal.modal('hide');
-        store.setPolygons();
       }
     }
   };
@@ -389,7 +386,6 @@ function initializeGoogleMapsEditor(elem, data, modalBodyId) {
     el: elem,
     mounted: function mounted() {
       var self = this;
-      this.setAllMapShapes();
       $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
         self.activateTab(e.target);
       });
@@ -438,6 +434,14 @@ function initializeGoogleMapsEditor(elem, data, modalBodyId) {
       },
       setAutocomplete: function setAutocomplete() {
         this.$refs.markerEditor.setAutocomplete();
+      }
+    },
+    watch: {
+      sharedState: {
+        deep: true,
+        handler: function handler() {
+          store.setAllMapShapes();
+        }
       }
     }
   });
