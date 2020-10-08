@@ -8,10 +8,7 @@ namespace ThisNetWorks.OrchardCore.GoogleMaps.Indexes
 {
     public class GoogleMapPartIndex : MapIndex
     {
-        public string ContentItemId { get; set; }
         public string ContentType { get; set; }
-        public double Lat { get; set; }
-        public double Lng { get; set; }
     }
 
     public class GoogleMapPartIndexProvider : IndexProvider<ContentItem>
@@ -28,17 +25,14 @@ namespace ThisNetWorks.OrchardCore.GoogleMaps.Indexes
 
                     var googleMapPart = contentItem.As<GoogleMapPart>();
 
-                    if (googleMapPart == null || googleMapPart.Marker.Lat == 0 || googleMapPart.Marker.Lng == 0)
+                    if (googleMapPart == null)
                     {
                         return null;
                     }
 
                     var googleMapPartIndex = new GoogleMapPartIndex
                     {
-                        ContentItemId = contentItem.ContentItemId,
-                        ContentType = contentItem.ContentType,
-                        Lat = googleMapPart.Marker.Lat,
-                        Lng = googleMapPart.Marker.Lng
+                        ContentType = contentItem.ContentType
                     };
 
                     if (googleMapPartIndex.ContentType?.Length > ContentItemIndex.MaxContentTypeSize)

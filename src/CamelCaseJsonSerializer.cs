@@ -9,5 +9,9 @@ namespace ThisNetWorks.OrchardCore.GoogleMaps
         {
             ContractResolver = new CamelCasePropertyNamesContractResolver()
         };
+        public static readonly JsonSerializer Serializer = new JsonSerializer()
+        {
+            ContractResolver = new CamelCasePropertyNamesContractResolver()
+        };
     }
 }

@@ -1,4 +1,7 @@
 ﻿@model dynamic;
+@{
+    var polygons = JArray.FromObject(Model.Polygons, CamelCaseJsonSerializer.Serializer);
+}
 <script at="Foot" asp-name="google-maps-init" depends-on="google-maps-marker, jquery">
     var map;
 
@@ -9,11 +12,44 @@
         });
 
 
-        @if(Model.Lat != 0 && Model.Lng != 0)
+        @if(Model.Marker.Lat != 0 && Model.Marker.Lng != 0)
         {
             <text>
             setMarker(new google.maps.LatLng(@Model.Marker.Lat, @Model.Marker.Lng), map);
             </text>
+        }
+        @if (Model.Polygons.Length > 0)
+        {
+            foreach(var polygon in polygons) 
+            {
+            <text>
+                setPolygon(@Html.Raw(polygon), map);
+            </text>
+            }
+        }
+
+        var bounds = new google.maps.LatLngBounds();
+
+        var hasLocation = false;        
+        if (marker) {
+            bounds.extend(marker.position);
+            hasLocation = true;
+        }
+
+        if (polygonShapes && polygonShapes.length > 0) {
+            for (var p = 0; p < polygonShapes.length; p++) {
+                hasLocation = true;
+                var shape = polygonShapes[p];
+                var vertices = shape.getPath();
+                for (let i = 0; i < vertices.getLength(); i++) {
+                    const xy = vertices.getAt(i);
+                    bounds.extend(xy);
+                }         
+            };
+        }
+
+        if (hasLocation) {
+            map.fitBounds(bounds);
         }
     }
 

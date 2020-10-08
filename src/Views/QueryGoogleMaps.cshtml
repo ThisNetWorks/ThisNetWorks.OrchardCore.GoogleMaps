@@ -1,21 +1,25 @@
 ﻿@model dynamic
 @inject ISession Session
-@inject IOptions<AutorouteOptions> AutorouteOptions
+@inject IContentManager ContentManager
 @{
     if (Model.ContentType != null)
     {
         var contentType = Model.ContentType as string;
-        var query = Session.QueryIndex<GoogleMapPartIndex>(x => x.ContentType == contentType);
+        var query = Session.Query<ContentItem, GoogleMapPartIndex>(x => x.ContentType == contentType);
         var results = await query.ListAsync();
         var list = new List<DisplayMapViewModel>();
-        foreach(var result in results)
+        foreach(var contentItem in results)
         {    
-            var routeValues = new RouteValueDictionary(AutorouteOptions.Value.GlobalRouteValues);
-            routeValues[AutorouteOptions.Value.ContentItemIdKey] = result.ContentItemId;
-            var url = Url.RouteUrl(routeValues);
+            var googleMapPart = contentItem.As<GoogleMapPart>();
+            var contentItemMetadata = await ContentManager.PopulateAspectAsync<ContentItemMetadata>(contentItem);
+            var request = Url.ActionContext.HttpContext.Request;
+            var routes = contentItemMetadata.DisplayRouteValues;
+            var url = Url.Action(routes["action"].ToString(), routes["controller"].ToString(), routes, request.Scheme);
+
             var item = new DisplayMapViewModel
             {
-                Marker = new LatLng { Lat = result.Lat, Lng = result.Lng },
+                Marker = googleMapPart.Marker,
+                Polygons = googleMapPart.Polygons,
                 Path = url
             };
             list.Add(item);

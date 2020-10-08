@@ -50,17 +50,10 @@ namespace ThisNetWorks.OrchardCore.GoogleMaps.Drivers
             await updater.TryUpdateModelAsync(model, Prefix);
             try
             {
-                // part.Marker = model.Marker;
-                // part.Location = model.Location;
-                // part.Polygons = String.IsNullOrWhiteSpace(model.Polygons)
-                //     ? Array.Empty<Polygon>()
-                //     : JsonConvert.DeserializeObject<Polygon[]>(model.Polygons, CamelCaseJsonSerializer.Settings);
-
                 var editModel = JsonConvert.DeserializeObject<GoogleMapEditModel>(model.Json, CamelCaseJsonSerializer.Settings);
                 part.Location = editModel.Marker.Location;
                 part.Marker  = editModel.Marker.LatLng;
                 part.Polygons = editModel.Polygons;
-
             }
             catch
             {
@@ -103,8 +96,6 @@ namespace ThisNetWorks.OrchardCore.GoogleMaps.Drivers
 
             model.ContentItem = part.ContentItem;
             model.Location = part.Location;
-            model.Marker = part.Marker;
-            model.Polygons = JsonConvert.SerializeObject(part.Polygons, CamelCaseJsonSerializer.Settings);
             model.Json = JsonConvert.SerializeObject(editModel, CamelCaseJsonSerializer.Settings);
             model.GoogleMapPart = part;
             model.Settings = settings;
