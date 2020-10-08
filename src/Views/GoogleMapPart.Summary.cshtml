@@ -1,15 +1,16 @@
 ﻿@model GoogleMapPartViewModel
-@inject IOptions<AutorouteOptions> AutorouteOptions
+@inject IContentManager ContentManager
 
 @{
-    var routeValues = new RouteValueDictionary(AutorouteOptions.Value.GlobalRouteValues);
-    routeValues[AutorouteOptions.Value.ContentItemIdKey] = Model.ContentItem.ContentItemId;
-    var url = Url.RouteUrl(routeValues);
+    var contentItemMetadata = await ContentManager.PopulateAspectAsync<ContentItemMetadata>(Model.ContentItem);
+    var request = Url.ActionContext.HttpContext.Request;
+    var routes = contentItemMetadata.DisplayRouteValues;
+    var url = Url.Action(routes["action"].ToString(), routes["controller"].ToString(), routes, request.Scheme);
 
     var serializable = new DisplayMapViewModel
     {
-        Lat = Model.Lat,
-        Lng = Model.Lng,
+        Marker = Model.Marker,
+        Polygons = Model.Polygons,
         Path = url
     };
 

@@ -3,6 +3,7 @@ using OrchardCore.ContentManagement.Metadata;
 using OrchardCore.Data.Migration;
 using OrchardCore.ContentManagement.Records;
 using ThisNetWorks.OrchardCore.GoogleMaps.Indexes;
+using YesSql.Sql;
 
 namespace ThisNetWorks.OrchardCore.GoogleMaps
 {
@@ -26,17 +27,14 @@ namespace ThisNetWorks.OrchardCore.GoogleMaps
 
         public int UpdateFrom1()
         {
-            SchemaBuilder.CreateMapIndexTable(nameof(GoogleMapPartIndex), table => table
-                .Column<string>("Lat", col => col.WithLength(25))
-                .Column<string>("Lng", col => col.WithLength(25))
-                .Column<string>("ContentItemId", c => c.WithLength(26))
+            SchemaBuilder.CreateMapIndexTable<GoogleMapPartIndex>(table => table
                 .Column<string>("ContentType", column => column.WithLength(ContentItemIndex.MaxContentTypeSize))
             );
 
             // Index on content type as that is most likely to be used for retrieving data from index
             // without having to query document table as well.
             SchemaBuilder.AlterTable(nameof(GoogleMapPartIndex), table => table
-                .CreateIndex("IDX_GoogleMapPartIndex_ContentType", "ContentType")
+                .CreateIndex("IDX_GoogleMapPartIndex_ContentType", "DocumentId", "ContentType")
             );
 
             return 2;

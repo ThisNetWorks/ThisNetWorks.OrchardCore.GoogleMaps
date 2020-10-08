@@ -1,0 +1,21 @@
+﻿<script at="Foot" asp-name="google-maps-polygon">
+    var polygonShapes = [];
+
+    var setPolygon = function (polygon, map) {
+        var paths = [];
+        for (var l = 0; l < polygon.latLngs.length; l++) {
+            var latLng = polygon.latLngs[l];
+            paths.push(new google.maps.LatLng(latLng.lat, latLng.lng));
+        }        
+        var shape = new google.maps.Polygon({
+            paths: paths,
+            strokeColor: polygon.strokeColor,
+            strokeOpacity: polygon.strokeOpacity,
+            strokeWeight: polygon.strokeWeight,
+            fillColor: polygon.fillColor,
+            fillOpacity: polygon.fillOpacity
+        });
+        polygonShapes.push(shape);
+        shape.setMap(map);
+    };
+</script>
