@@ -5,6 +5,7 @@
 <script asp-name="google-maps-init" depends-on="jquery, google-maps-polygon, google-maps-marker, display-maps-handlers" at="Foot">
 
     var map;
+    var bounds;
 
     var mapInit = function () {
         var mapItems = [];    
@@ -39,28 +40,32 @@
             zoom: 8
         });
 
-        var bounds = new google.maps.LatLngBounds();
+        bounds = new google.maps.LatLngBounds();
         for (var i = 0; i < mapItems.length; i++) {
             var mapItem = mapItems[i];
             if (mapItem.marker) {
                 var marker = setMarker(new google.maps.LatLng(mapItem.marker.lat, mapItem.marker.lng), mapItem.path, map);
-                bounds.extend(marker.position);
-                google.maps.event.addListener(marker, 'click', function () {
-                    onMapClicked(mapItem);
-                });
+                if (marker) {
+                    bounds.extend(marker.position);
+                    google.maps.event.addListener(marker, 'click', function () {
+                        onMapClicked(mapItem);
+                    });
+                }
             }
             if (mapItem.polygons && mapItem.polygons.length > 0) {
                 for (var p = 0; p < mapItem.polygons.length; p++) {
                     var polygon = mapItem.polygons[p];
                     var shape = setPolygon(polygon, map); 
-                    google.maps.event.addListener(shape, 'click', function () {
-                        onMapClicked(mapItem);
-                    });                    
-                    var vertices = shape.getPath();
-                    for (let i = 0; i < vertices.getLength(); i++) {
-                        var xy = vertices.getAt(i);
-                        bounds.extend(xy);
-                    }   
+                    if (shape) {
+                        google.maps.event.addListener(shape, 'click', function () {
+                            onMapClicked(mapItem);
+                        });                    
+                        var vertices = shape.getPath();
+                        for (let i = 0; i < vertices.getLength(); i++) {
+                            var xy = vertices.getAt(i);
+                            bounds.extend(xy);
+                        }   
+                    }
                 }
             }
         };
