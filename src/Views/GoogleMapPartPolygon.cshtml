@@ -5,8 +5,13 @@
         var paths = [];
         for (var l = 0; l < polygon.latLngs.length; l++) {
             var latLng = polygon.latLngs[l];
-            paths.push(new google.maps.LatLng(latLng.lat, latLng.lng));
+            if (latLng.lat != 0 && latLng.lng != 0) {
+                paths.push(new google.maps.LatLng(latLng.lat, latLng.lng));
+            }
         }        
+        if (paths.length === 0) {
+            return;
+        }
         var shape = new google.maps.Polygon({
             paths: paths,
             strokeColor: polygon.strokeColor,

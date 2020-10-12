@@ -5,6 +5,9 @@
     }
 
     var setMarker = function (position, path, map) {
+        if (mapItem.marker.lat === 0 || mapItem.marker.lng === 0) {
+            return null;
+        }
         var marker = new google.maps.Marker({
             position: position,
             map: map,
@@ -15,8 +18,18 @@
     };
 
     var setPolygon = function (polygon, map) {
+        var paths = [];
+        for (var l = 0; l < polygon.latLngs.length; l++) {
+            var latLng = polygon.latLngs[l];
+            if (latLng.lat != 0 && latLng.lng != 0) {
+                paths.push(new google.maps.LatLng(latLng.lat, latLng.lng));
+            }
+        } 
+        if (paths.length == 0) {
+            return null;
+        }
         var shape = new google.maps.Polygon({
-            paths: polygon.latLngs.map(latLng => new google.maps.LatLng(latLng.lat, latLng.lng)),
+            paths: paths,
             strokeColor: polygon.strokeColor,
             strokeOpacity: polygon.strokeOpacity,
             strokeWeight: polygon.strokeWeight,
