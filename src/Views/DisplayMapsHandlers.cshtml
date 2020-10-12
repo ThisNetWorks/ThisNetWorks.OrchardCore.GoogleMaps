@@ -1,0 +1,31 @@
+﻿<script asp-name="google-maps-handlers" at="Foot">
+
+    var onMapClicked = function(mapItem) {
+        window.location.href = mapItem.path;
+    }
+
+    var setMarker = function (position, path, map) {
+        var marker = new google.maps.Marker({
+            position: position,
+            map: map,
+            path: path
+        });
+
+        return marker;
+    };
+
+    var setPolygon = function (polygon, map) {
+        var shape = new google.maps.Polygon({
+            paths: polygon.latLngs.map(latLng => new google.maps.LatLng(latLng.lat, latLng.lng)),
+            strokeColor: polygon.strokeColor,
+            strokeOpacity: polygon.strokeOpacity,
+            strokeWeight: polygon.strokeWeight,
+            fillColor: polygon.fillColor,
+            fillOpacity: polygon.fillOpacity
+        });
+        shape.setMap(map);
+
+        return shape;
+    };  
+
+</script>
