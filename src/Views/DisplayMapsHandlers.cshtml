@@ -5,7 +5,7 @@
     }
 
     var setMarker = function (position, path, map) {
-        if (mapItem.marker.lat === 0 || mapItem.marker.lng === 0) {
+        if (position.lat() === 0 || position.lng() === 0) {
             return null;
         }
         var marker = new google.maps.Marker({

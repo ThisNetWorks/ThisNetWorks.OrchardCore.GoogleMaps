@@ -1,9 +1,9 @@
 ﻿<script at="Foot" asp-name="google-maps-marker">
     var marker;
     var setMarker = function (position, map) {
-       if (position.lat === 0 || position.lng === 0) {
-            return;
-        }        
+        if (position.lat === 0 || position.lng === 0) {
+            return null;
+        }       
         marker = new google.maps.Marker({
             position: position,
             map: map
