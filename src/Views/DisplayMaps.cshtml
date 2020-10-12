@@ -46,7 +46,7 @@
                 var marker = setMarker(new google.maps.LatLng(mapItem.marker.lat, mapItem.marker.lng), mapItem.path, map);
                 bounds.extend(marker.position);
                 google.maps.event.addListener(marker, 'click', function () {
-                    onMapClicked(mapItem.path);
+                    onMapClicked(mapItem);
                 });
             }
             if (mapItem.polygons && mapItem.polygons.length > 0) {
@@ -54,7 +54,7 @@
                     var polygon = mapItem.polygons[p];
                     var shape = setPolygon(polygon, map); 
                     google.maps.event.addListener(shape, 'click', function () {
-                        onMapClicked(mapItem.path);
+                        onMapClicked(mapItem);
                     });                    
                     var vertices = shape.getPath();
                     for (let i = 0; i < vertices.getLength(); i++) {

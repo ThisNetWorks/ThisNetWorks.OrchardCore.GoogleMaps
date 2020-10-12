@@ -1,7 +1,7 @@
 ﻿<script asp-name="google-maps-handlers" at="Foot">
 
-    var onMapClicked = function(path) {
-        window.location.href = path;
+    var onMapClicked = function(mapItem) {
+        window.location.href = mapItem.path;
     }
 
     var setMarker = function (position, path, map) {
