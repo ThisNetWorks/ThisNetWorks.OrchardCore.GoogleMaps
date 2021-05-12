@@ -5,6 +5,7 @@ using OrchardCore.Environment.Extensions;
 using OrchardCore.Environment.Shell;
 using OrchardCore.Setup.Events;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ThisNetWorks.OrchardCore.GoogleMaps.Models;
@@ -36,7 +37,7 @@ namespace ThisNetWorks.OrchardCore.GoogleMaps.Sample
             _shellFeatureManager = shellFeatureManager;
         }
 
-        public async Task Setup(string siteName, string userName, string email, string password, string dbProvider, string dbConnectionString, string dbTablePrefix, string siteTimeZone, Action<string, string> reportError)
+        public async Task Setup(IDictionary<string, object> properties, Action<string, string> reportError)
         {
             var features = _extensionManager.GetFeatures();
 

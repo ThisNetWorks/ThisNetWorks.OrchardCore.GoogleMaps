@@ -9,7 +9,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/samples/ThisNetWorks.OrchardCore.GoogleMaps.Sample/bin/Debug/netcoreapp3.1/ThisNetWorks.OrchardCore.GoogleMaps.Sample.dll",
+            "program": "${workspaceFolder}/samples/ThisNetWorks.OrchardCore.GoogleMaps.Sample/bin/Debug/net5.0/ThisNetWorks.OrchardCore.GoogleMaps.Sample.dll",
             "args": [],
             "cwd": "${workspaceFolder}/samples/ThisNetWorks.OrchardCore.GoogleMaps.Sample",
             "stopAtEntry": false,

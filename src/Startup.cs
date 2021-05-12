@@ -13,7 +13,6 @@ using ThisNetWorks.OrchardCore.GoogleMaps.Drivers;
 using ThisNetWorks.OrchardCore.GoogleMaps.Indexes;
 using ThisNetWorks.OrchardCore.GoogleMaps.Models;
 using ThisNetWorks.OrchardCore.GoogleMaps.Settings;
-using ThisNetWorks.OrchardCore.GoogleMaps.Shapes;
 using ThisNetWorks.OrchardCore.GoogleMaps.ViewModels;
 using YesSql.Indexes;
 
@@ -21,15 +20,15 @@ namespace ThisNetWorks.OrchardCore.GoogleMaps
 {
     public class Startup : StartupBase
     {
-        static Startup()
-        {
-            TemplateContext.GlobalMemberAccessStrategy.Register<GoogleMapPartViewModel>();
-            TemplateContext.GlobalMemberAccessStrategy.Register<GoogleMapsSettingsViewModel>();
-            TemplateContext.GlobalMemberAccessStrategy.Register<DisplayMapViewModel>();
-        }
-
         public override void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<TemplateOptions>(o =>
+            {
+                o.MemberAccessStrategy.Register<GoogleMapPartViewModel>();
+                o.MemberAccessStrategy.Register<GoogleMapsSettingsViewModel>();
+                o.MemberAccessStrategy.Register<DisplayMapViewModel>();
+            });
+
             services.AddSingleton<IIndexProvider, GoogleMapPartIndexProvider>();
             services.AddScoped<IDataMigration, Migrations>();
 
@@ -42,8 +41,6 @@ namespace ThisNetWorks.OrchardCore.GoogleMaps
             services.AddScoped<IPermissionProvider, Permissions>();
 
             services.AddScoped<IDisplayDriver<ISite>, GoogleMapsSettingsDisplayDriver>();
-
-            services.AddScoped<IShapeTableProvider, GoogleMapsSettingsShapes>();
         }
     }
 }
