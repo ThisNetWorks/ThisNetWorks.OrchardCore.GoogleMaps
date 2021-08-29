@@ -1,13 +1,13 @@
 <Project>
 
   <ItemGroup>
-    <PackageReference Update="OrchardCore.Application.Cms.Targets" Version="1.0.0-rc2-16196" />
-    <PackageReference Update="OrchardCore.ContentManagement" Version="1.0.0-rc2-16196" />
-    <PackageReference Update="OrchardCore.ContentTypes.Abstractions" Version="1.0.0-rc2-16196" />
-    <PackageReference Update="OrchardCore.DisplayManagement" Version="1.0.0-rc2-16196" />
-    <PackageReference Update="OrchardCore.Logging.NLog" Version="1.0.0-rc2-16196" />
-    <PackageReference Update="OrchardCore.Module.Targets" Version="1.0.0-rc2-16196" />
-    <PackageReference Update="OrchardCore.Navigation.Core" Version="1.0.0-rc2-16196" />
-    <PackageReference Update="OrchardCore.ResourceManagement" Version="1.0.0-rc2-16196" />
+    <PackageReference Update="OrchardCore.Application.Cms.Targets" Version="1.0.0" />
+    <PackageReference Update="OrchardCore.ContentManagement" Version="1.0.0" />
+    <PackageReference Update="OrchardCore.ContentTypes.Abstractions" Version="1.0.0" />
+    <PackageReference Update="OrchardCore.DisplayManagement" Version="1.0.0" />
+    <PackageReference Update="OrchardCore.Logging.NLog" Version="1.0.0" />
+    <PackageReference Update="OrchardCore.Module.Targets" Version="1.0.0" />
+    <PackageReference Update="OrchardCore.Navigation.Core" Version="1.0.0" />
+    <PackageReference Update="OrchardCore.ResourceManagement" Version="1.0.0" />
   </ItemGroup>
 </Project>  
