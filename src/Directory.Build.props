@@ -3,7 +3,8 @@
   <PropertyGroup>
     <PackageTags>googlemaps;orchardcore;</PackageTags>
     <VersionPrefix>1.0.0</VersionPrefix>
-    <VersionSuffix>beta</VersionSuffix>
+    <VersionSuffix>preview</VersionSuffix>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <!-- Called after so that the <VersionSuffix> is built after the local ones -->
