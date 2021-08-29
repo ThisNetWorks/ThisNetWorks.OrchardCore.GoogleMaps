@@ -4,7 +4,7 @@ using OrchardCore.Modules.Manifest;
     Name = "Google Maps",
     Author = "ThisNetWorks",
     Website = "https://github.com/ThisNetWorks/ThisNetWorks.OrchardCore.GoogleMaps",
-    Version = "0.0.1",
+    Version = "1.0.0",
     Description = "Google Maps Module",
     Dependencies = new[] { "OrchardCore.Contents" },
     Category = "Content Management"
